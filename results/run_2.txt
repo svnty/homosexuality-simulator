@@ -1,10 +1,10 @@
 Initial population: 10,000
 Initial homosexuals: 50%
 Children per generation: 0.01 to 0.005 percent of total population
-Random event chance: 1/2
+Random event chance: 50%
 Death range: 70 to 90 years old
 Breeding ages: 20 to 50 years old
-Run off years: 250
+Run off: 250 years
 Homosexual extinction year approx: 5000
 
 0	0	4994	10000
