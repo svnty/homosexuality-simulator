@@ -2,6 +2,7 @@ const fs = require('fs');
 
 let human_count = 0;
 let generation = 0;
+let homosexual_mates = 0;
 let humans = [];
 let donors = [];
 
@@ -10,7 +11,7 @@ const starting_percent_as_LGBT = 0.05;
 const children_percent_of_generation = [0.01, 0.005];
 const random_event_range = [2, 1];
 const death_range = [90, 70];
-const run_off_generation = 250;
+const run_off_generation = 50;
 
 class person {
     constructor(parent_1, parent_2, age = 0, homosexual = false, donor = false) {
@@ -364,10 +365,13 @@ function getDonor(parent) {
 
 function mate(parent_1, parent_2) {
     // Homosexual couple
-    if (parent_1.homosexual == true && parent_2.homosexual == true) {
+    // Using OR instead of AND to consider bisexuals
+    if (parent_1.homosexual == true || parent_2.homosexual == true) {
         if (randomEvent() == true) {
             let donor = getDonor(parent_1);
             if (donor != false) {
+                console.log('homosexual mate');
+                homosexual_mates += 1;
                 let new_human = new person(parent_1, parent_2);
                 humans.push(new_human);
             }
@@ -391,7 +395,7 @@ function checkMate(parent_1, parent_2) {
     return false;
 }
 
-function checkExtinct() {
+function checkExtinct(save) {
     let extinct = true;
     let homosexual_counter = 0;
     let person_counter = 0;
@@ -405,9 +409,10 @@ function checkExtinct() {
         }
     }
     console.log('Current homosexuals: ' + homosexual_counter);
-    write(homosexual_counter);
-    console.log('Current people: ' + person_counter);
-    write(person_counter);
+    if (save) {
+        write(homosexual_counter);
+        write(person_counter);
+    }
     if (homosexual_counter > 0) {
         let percent = homosexual_counter / person_counter * 100;
         if (percent >= 100) {
@@ -430,19 +435,19 @@ function main() {
         let donor_random = Math.floor(Math.random() * (2 - 0)) + 0;
         let new_human = new person(null, null, 21, homosexuality_random, donor_random);
         humans.push(new_human);
-        if (new_human.donor)
+        if (new_human.donor) {
             donors.push(new_human)
+        }
     }
 
     let run_off_count_down = 0;
-    while (checkExtinct() == false || run_off_count_down < run_off_generation) {
-        if (checkExtinct() == true) {
+    while (checkExtinct(true) == false || run_off_count_down < run_off_generation) {
+        // Here is the bug
+        if (checkExtinct(false) == true) {
             run_off_count_down += 1;
         }
-        console.log('___________________');
         write('__');
         generation += 1;
-        console.log('Generation: ' + generation);
         write(generation);
         for (let human of humans) {
             let random_age = Math.floor(Math.random() * (death_range[0] - death_range[1])) + death_range[1];
@@ -457,8 +462,7 @@ function main() {
         let max = children[0];
         let min = children[1];
         let child_couter = Math.floor(Math.random() * (max - min)) + min;
-
-        console.log('Creating ' + child_couter + ' children');
+        homosexual_mates = 0;
         write(child_couter);
 
         for (let i = 0; i < child_couter; i++) {
@@ -470,6 +474,8 @@ function main() {
             }
             mate(parent_1, parent_2);
         }
+        
+        write(homosexual_mates);
     }
     console.log('Homosexuals extinct');
 }
@@ -484,4 +490,10 @@ function write(line) {
     fs.appendFileSync('results.txt',text);
 }
 
+function initText() {
+    fs.appendFileSync('results.txt', 'generation,children,random_event_child,homosexuals,total_population\n');
+}
+
+initText();
 main();
+console.log('Done');
