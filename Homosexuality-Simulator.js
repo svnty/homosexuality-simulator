@@ -364,7 +364,7 @@ function getDonor(parent) {
 
 function mate(parent_1, parent_2) {
     // Homosexual couple
-    if (parent_1.homosexual == true || parent_2.homosexual == true) {
+    if (parent_1.homosexual == true && parent_2.homosexual == true) {
         if (randomEvent() == true) {
             let donor = getDonor(parent_1);
             if (donor != false) {
