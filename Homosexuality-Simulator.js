@@ -340,8 +340,8 @@ function lawOfSeggregation(gene_1, gene_2) {
 }
 
 function randomEvent() {
-    let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
     // chance of surrgoacy, ivf or reproducing heterosexually
+    let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
     if (chance == 1) {
         return true;
     }
@@ -370,7 +370,6 @@ function mate(parent_1, parent_2) {
         if (randomEvent() == true) {
             let donor = getDonor(parent_1);
             if (donor != false) {
-                console.log('homosexual mate');
                 homosexual_mates += 1;
                 let new_human = new person(parent_1, parent_2);
                 humans.push(new_human);
@@ -408,17 +407,12 @@ function checkExtinct(save) {
             }
         }
     }
-    console.log('Current homosexuals: ' + homosexual_counter);
     if (save) {
         write(homosexual_counter);
         write(person_counter);
     }
     if (homosexual_counter > 0) {
         let percent = homosexual_counter / person_counter * 100;
-        if (percent >= 100) {
-            console.log('Heterosexuals extinct');
-        }
-        console.log('Homosexuals are ' + percent + '% of the population');
     }
     return extinct;
 }
@@ -442,7 +436,6 @@ function main() {
 
     let run_off_count_down = 0;
     while (checkExtinct(true) == false || run_off_count_down < run_off_generation) {
-        // Here is the bug
         if (checkExtinct(false) == true) {
             run_off_count_down += 1;
         }
@@ -477,7 +470,6 @@ function main() {
         
         write(homosexual_mates);
     }
-    console.log('Homosexuals extinct');
 }
 
 function write(line) {
