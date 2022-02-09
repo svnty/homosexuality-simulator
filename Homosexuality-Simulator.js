@@ -3,12 +3,13 @@ const fs = require('fs');
 let human_count = 0;
 let generation = 0;
 let homosexual_mates = 0;
+let homosexual_forced_mate = false;
 let humans = [];
 let donors = [];
 
 const starting_number_of_people = 100_000;
-const starting_percent_as_LGBT = 0.05;
-const children_percent_of_generation = [0.01, 0.005];
+const starting_percent_as_LGBT = 0.5;
+const children_percent_of_generation = [0.02, 0.016];
 const random_event_range = [2, 1];
 const death_range = [90, 70];
 const run_off_generation = 50;
@@ -351,7 +352,7 @@ function randomEvent() {
 function getDonor(parent) {
     try {
         let donor_recent = donors.length - 1;
-        let donor = donors[donor_recent];        
+        let donor = donors[donor_recent];
         while (donor.gender == parent.gender && donor.dead == true) {
             donor_recent -= 1;
             donor = donors[donor_recent];
@@ -367,6 +368,7 @@ function mate(parent_1, parent_2) {
     // Homosexual couple
     // Using OR instead of AND to consider bisexuals
     if (parent_1.homosexual == true || parent_2.homosexual == true) {
+        homosexual_forced_mate = true;
         if (randomEvent() == true) {
             let donor = getDonor(parent_1);
             if (donor != false) {
@@ -384,6 +386,9 @@ function mate(parent_1, parent_2) {
 }
 
 function checkMate(parent_1, parent_2) {
+    if (!parent_1 || !parent_2) {
+        return false;
+    }
     if (parent_1 != parent_2) {
         if (parent_1.age >= 20 && parent_2.age >= 20) {
             if (parent_1.age <= 50 && parent_2.age <= 50) {
@@ -398,7 +403,7 @@ function checkExtinct(save) {
     let extinct = true;
     let homosexual_counter = 0;
     let person_counter = 0;
-    for(let human of humans) {
+    for (let human of humans) {
         if (human.dead == false) {
             person_counter += 1;
             if (human.homosexual == true) {
@@ -410,9 +415,7 @@ function checkExtinct(save) {
     if (save) {
         write(homosexual_counter);
         write(person_counter);
-    }
-    if (homosexual_counter > 0) {
-        let percent = homosexual_counter / person_counter * 100;
+        write(humans.length);
     }
     return extinct;
 }
@@ -436,7 +439,8 @@ function main() {
 
     let run_off_count_down = 0;
     while (checkExtinct(true) == false || run_off_count_down < run_off_generation) {
-        if (checkExtinct(false) == true) {
+        is_extinct = checkExtinct(false);
+        if (is_extinct == true) {
             run_off_count_down += 1;
         }
         write('__');
@@ -454,20 +458,59 @@ function main() {
         let children = childPerGeneration();
         let max = children[0];
         let min = children[1];
-        let child_couter = Math.floor(Math.random() * (max - min)) + min;
+        let child_counter = Math.floor(Math.random() * (max - min)) + min;
+        let total_child_count = child_counter;
         homosexual_mates = 0;
-        write(child_couter);
+        write(child_counter);
+        homosexual_forced_mate = false;
 
-        for (let i = 0; i < child_couter; i++) {
+        for (let i = 0; i < child_counter; i++) {
             let parent_1;
             let parent_2;
             while (checkMate(parent_1, parent_2) != true) {
-                parent_1 = humans[Math.floor(Math.random()*humans.length)];
-                parent_2 = humans[Math.floor(Math.random()*humans.length)];
+                parent_1 = humans[Math.floor(Math.random() * humans.length)];
+                parent_2 = humans[Math.floor(Math.random() * humans.length)];
             }
             mate(parent_1, parent_2);
         }
-        
+
+        let reverse_walker = humans.length - 1;
+        // Forcing at least the chance of 1 homosexual mating per generation
+        for (; ;) {
+            if (homosexual_forced_mate == true) {
+                break;
+            }
+            if (is_extinct == true) {
+                break;
+            }
+            let breeding_age_gay = false;
+            for (const gay_check of humans) {
+                if (gay_check.homosexual) {
+                    if (gay_check.age >= 20) {
+                        if (!gay_check.dead) {
+                            breeding_age = true;
+                        }
+                    }
+                }
+            }
+            if (breeding_age_gay == false) {
+                break;
+            }
+            let parent_1;
+            let parent_2;
+            while (checkMate(parent_1, parent_2) != true) {
+                parent_1 = humans[Math.floor(Math.random() * humans.length)];
+                parent_2 = humans[reverse_walker];
+                console.log(reverse_walker);
+                reverse_walker = reverse_walker - 1;
+            }
+            if (parent_1.homosexual == true || parent_2.homosexual == true) {
+                total_child_count = child_counter + 1;
+                mate(parent_1, parent_2);
+            }
+        }
+
+        write(total_child_count);
         write(homosexual_mates);
     }
 }
@@ -479,13 +522,15 @@ function write(line) {
     } else {
         text = '\n';
     }
-    fs.appendFileSync('results.txt',text);
+    fs.appendFileSync('results.txt', text);
 }
 
 function initText() {
-    fs.appendFileSync('results.txt', 'generation,children,random_event_child,homosexuals,total_population\n');
+    fs.appendFileSync('results.txt', 'generation,calculated_children,children_created,random_event_child,homosexuals,alive_population,total_population\n');
+    fs.appendFileSync('results.txt', '0,0,0,');
 }
 
 initText();
 main();
 console.log('Done');
+process.exit();
