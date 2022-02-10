@@ -17,10 +17,15 @@ As the population increased the number of homosexuals did not increase proportio
 
 ## Discussion
 *Significance of data*
+
 These results indicate what would be expected from a non breeding species, the number of the existing genotypes within that species decreases and the genotype with a higher chance of survival increases. 
 
 *Future research*
+
 Future research should adjust for proximity of a people and their in-group preference to associate with people of similar culture and assumed normal practices of themselves, such that a homosexual population would likely form a dense community and random events could occur more likely within that community. Current simulation results assume homosexuals and heterosexuals are evenly distriputed throughout a population and people are selected to mate regardless of their geographical distance. 
+
+## Conclusions
+A rate of 50% breeding of homosexuals it isn't a high enough number for them to continue their genes, even with a high inital homosexuality rate of 50% of a population the number of homosexuals decreases so quickly they become exitinct within a few generations. Future simulations could more accurately represnt the breeding patterns by using variables that more closely represent the real world.
 
 ## Assets 
 [https://github.com/svnty/Homosexuality-Simulator](https://github.com/svnty/Homosexuality-Simulator)
