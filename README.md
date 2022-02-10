@@ -19,6 +19,10 @@ The population increase was exponential and initially the random event offspring
 **Figure 1:** The data shows us a clear exponential increase in the total population, as the total population increases the number of children also scales to remain at between 1.6 to 2% of the total population as expected. The number of homosexuals initially at 50% of the population decreases rapidly at year 50. 
 
 ## Discussion
+*The assumptions made*
+
+Perhaps the assumption that all four (m) or three (f) genes are necessary in the creation of homosexual offspring was an over exaggeration of the real-world principles, it is possible that only two genes or less are required in association with sociological or psychological factors to influence someone into same-sex sexual behaviour.
+
 *Implications of the intended research*
 
 The simulation ended abruptly, the simulation was intended to be run for 100,000's of years to get an accurate representation of the entire evolution of the human species and then to adjust variables slowly to match the progressive nature of humans and the changing social environments, however, the extinction occurred so rapidly a generation past a few hundred years could never be reached. Also intended was to start the simulation at a population of 7 billion and a starting percent of homosexuals of between 5 to 10% of the population and stimulate the scenario of a modern world, however with limited memory available this was not possible, on a machine with more memory or a more efficient language such as C++ this may be achievable. 
