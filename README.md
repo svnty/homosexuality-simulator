@@ -19,7 +19,7 @@ As the population increased the number of homosexuals did not increase proportio
 **Table 1:** The data shows us a clear exponential increase in the total population, as the total population increases the number of children also scales to remain at between 1.6 to 2% of the total population as expected. The number of homosexuals initially at 50% of the population decreases rapidly at year 50. 
 
 ## Discussion
-*Implications of intended research*
+*Implications of the intended research*
 
 The simulation ended abruptly, the simulation was intended to be run for 100,000's of years to get an accurate representation of the entire evolution of the human species and then to adjust variables slowly to match the progressive nature of humans and the changing social environments, however, the extinction occurred so rapidly a generation past a few hundred years could never be reached. Also intended was to start the simulation at a population of 7 billion and a starting percent of homosexuals of between 5 to 10% of the population and stimulate the scenario of a modern world, however with limited memory available this was not possible, on a machine with more memory or a more efficient language such as C++ this may be achievable. 
 
