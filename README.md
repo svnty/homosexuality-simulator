@@ -21,7 +21,7 @@ The population increase was exponential and initially the random event offspring
 ## Discussion
 *The assumptions made*
 
-Perhaps the assumption that all four (m) or three (f) genes are necessary in the creation of homosexual offspring was an over exaggeration of the real-world principles, it is possible that only two genes or less are required in association with sociological or psychological factors to influence someone into same-sex sexual behaviour.
+Perhaps the assumption that all four genes in males or three genes in female genes are necessary in the creation of homosexual offspring was an over exaggeration of the real-world principles, it is possible that only two genes or less are required in association with sociological or psychological factors to influence someone into same-sex sexual behaviour.
 
 *Implications of the intended research*
 
