@@ -12,7 +12,7 @@ A simulation was programmed using no pre-packaged software and ran using Node.js
 ## Results
 As the population increased the number of homosexuals did not increase proportionally, instead, the number of homosexuals decreased once the initial population of homosexuals had died at around year 50 when the initial large homosexual population was between 70 to 90 years old. Random event children were a low but steady number until the homosexual population diminished. 
 ![Final results](https://raw.githubusercontent.com/svnty/Homosexuality-Simulator/main/results/forced_breeding_50percent.png)
-*Table 1:* The data shows us a clear exponential increase in the total population, as the total population increases the number of children also scales to remain at between 1.6 to 2% of the total population as expected. The number of homosexuals initially at 50% of the population decreases rapidly at year 50. 
+**Table 1:** The data shows us a clear exponential increase in the total population, as the total population increases the number of children also scales to remain at between 1.6 to 2% of the total population as expected. The number of homosexuals initially at 50% of the population decreases rapidly at year 50. 
 
 ## Discussion
 
