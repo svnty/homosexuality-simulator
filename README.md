@@ -1,4 +1,5 @@
 # Homosexuality-Simulator
+Jake Walklate
 
 ## Abstract
 Homosexuals have long assumed their sexual proclivities are biologically grounded. A previous GWAS identified 5 genes involved in homosexuality, 2 are gender-neutral, 2 are male associated and 1 is female associated, for a male to be homosexual he should have all 4 of the genes involved in the sexual preference, and for women all 3. A simulation was run which investigated the effect of breeding with these genes, all five genes were assumed to be recessive and to be a homosexual a male needed to be homozygous in all 4 genes, for example. The law of segregation was applied to all offspring with the calculated chance of their children inheriting genes from the parent's genes, homosexuals were given a chance to reproduce each generation of offspring. The data showed that homosexuals were extinct by generation 231. The simulation continued for 50 generations to check for a revival of the homosexual genes, no such case occurred.
