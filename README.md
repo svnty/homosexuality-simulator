@@ -1,4 +1,4 @@
-# Homosexuality-Simulator
+# Simulating homosexuality as a Mendelian recessive gene
 *Author:* [Jake S. Walklate](https://www.linkedin.com/in/svnty) (jakewalklate@gmail.com)
 
 *Topics:* Bioinformatics, Same-sex attraction, Genetics
