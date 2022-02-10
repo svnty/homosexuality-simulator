@@ -1,5 +1,5 @@
 # Homosexuality-Simulator
-*Author:* [Jake S. Walklate](https://www.linkedin.com/in/svnty)
+*Author:* [Jake S. Walklate](https://www.linkedin.com/in/svnty) (jakewalklate@gmail.com)
 
 *Topics:* Bioinformatics, Same-sex attraction, Genetics
 
