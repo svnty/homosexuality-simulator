@@ -16,6 +16,11 @@ As the population increased the number of homosexuals did not increase proportio
 **Table 1:** The data shows us a clear exponential increase in the total population, as the total population increases the number of children also scales to remain at between 1.6 to 2% of the total population as expected. The number of homosexuals initially at 50% of the population decreases rapidly at year 50. 
 
 ## Discussion
+*Significance of data*
+These results indicate what would be expected from a non breeding species, the number of the existing genotypes within that species decreases and the genotype with a higher chance of survival increases. 
+
+*Future research*
+Future research should adjust for proximity of a people and their in-group preference to associate with people of similar culture and assumed normal practices of themselves, such that a homosexual population would likely form a dense community and random events could occur more likely within that community. Current simulation results assume homosexuals and heterosexuals are evenly distriputed throughout a population and people are selected to mate regardless of their geographical distance. 
 
 ## Assets 
 [https://github.com/svnty/Homosexuality-Simulator](https://github.com/svnty/Homosexuality-Simulator)
