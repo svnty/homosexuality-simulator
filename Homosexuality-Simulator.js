@@ -7,12 +7,13 @@ let homosexual_forced_mate = false;
 let humans = [];
 let donors = [];
 
-const starting_number_of_people = 100_000;
-const starting_percent_as_LGBT = 0.5;
+const starting_number_of_people = 10_000;
+const starting_percent_as_LGBT = 0.2;
 const children_percent_of_generation = [0.02, 0.016];
 const random_event_range = [2, 1];
 const death_range = [90, 70];
-const run_off_generation = 50;
+const run_off_generation = 250;
+const breed_range = [20, 50];
 
 class person {
     constructor(parent_1, parent_2, age = 0, homosexual = false, donor = false) {
@@ -342,8 +343,10 @@ function lawOfSeggregation(gene_1, gene_2) {
 
 function randomEvent() {
     // chance of surrgoacy, ivf or reproducing heterosexually
-    let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
-    if (chance == 1) {
+    //let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
+    // if (chance == 1) {
+    let chance = Math.random();
+    if (chance <= 0.75) {
         return true;
     }
     return false;
@@ -390,8 +393,8 @@ function checkMate(parent_1, parent_2) {
         return false;
     }
     if (parent_1 != parent_2) {
-        if (parent_1.age >= 20 && parent_2.age >= 20) {
-            if (parent_1.age <= 50 && parent_2.age <= 50) {
+        if (parent_1.age >= breed_range[0] && parent_2.age >= breed_range[0]) {
+            if (parent_1.age <= breed_range[1] && parent_2.age <= breed_range[1]) {
                 return true;
             }
         }
