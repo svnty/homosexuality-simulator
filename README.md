@@ -19,6 +19,7 @@ The population increase was exponential and initially the random event offspring
 ![Final results](https://raw.githubusercontent.com/svnty/Homosexuality-Simulator/main/results/forced_breeding_50percent.png)
 
 **Figure 1:** The data shows us a clear exponential increase in the total population, as the total population increases the number of children also scales to remain at between 1.6 to 2% of the total population as expected. The number of homosexuals initially at 50% of the population decreases rapidly at year 50.
+
 Variables were systematically randomized, sometimes to reflect real world data and sometimes to extend the lifetime of homosexuals for as long as possible to discover new data patterns, all results approximated towards the figure 1 data. The results of the randomized 
 configurations can be seen in table 1.
 
