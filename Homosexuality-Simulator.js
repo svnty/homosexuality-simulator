@@ -14,6 +14,7 @@ const random_event_range = [2, 1];
 const death_range = [90, 70];
 const run_off_generation = 250;
 const breed_range = [20, 50];
+const sociological = true;
 
 class person {
     constructor(parent_1, parent_2, age = 0, homosexual = false, donor = false) {
@@ -98,13 +99,22 @@ class person {
         // rs11114975-12q21.31 [ALL]
         if (this.gwas['rs11114975-12q21.31']['allele']['one'] == 'r') {
             if (this.gwas['rs11114975-12q21.31']['allele']['two'] == 'r') {
+                if (Math.random() <= 0.1 && sociological == true) {
+                    this.homosexual = true;
+                }
                 // rs10261857-7q31.2 [ALL]
                 if (this.gwas['rs10261857-7q31.2']['allele']['one'] == 'r') {
                     if (this.gwas['rs10261857-7q31.2']['allele']['two'] == 'r') {
+                        if (Math.random() <= 0.1 && sociological == true) {
+                            this.homosexual = true;
+                        }
                         if (this.gender == 'M') {
                             // rs28371400-15q21.3 [MALE ONLY]
                             if (this.gwas['rs28371400-15q21.3']['allele']['one'] == 'r') {
                                 if (this.gwas['rs28371400-15q21.3']['allele']['two'] == 'r') {
+                                    if (Math.random() <= 0.1 && sociological == true) {
+                                        this.homosexual = true;
+                                    }
                                     // rs34730029-11q12.1 [MALE ONLY]
                                     if (this.gwas['rs34730029-11q12.1']['allele']['one'] == 'r') {
                                         if (this.gwas['rs34730029-11q12.1']['allele']['two'] == 'r') {
@@ -117,6 +127,9 @@ class person {
                             // rs13135637-4p14 [FEMALE ONLY]
                             if (this.gwas['rs13135637-4p14']['allele']['one'] == 'r') {
                                 if (this.gwas['rs13135637-4p14']['allele']['two'] == 'r') {
+                                    if (Math.random() <= 0.1 && sociological == true) {
+                                        this.homosexual = true;
+                                    }
                                     this.homosexual = true;
                                 }
                             }
@@ -125,6 +138,18 @@ class person {
                 }
             }
         }
+
+        if (Math.random() <= 0.1 && sociological == true) {
+            if (this.gwas['rs10261857-7q31.2']['allele']['one'] == 'r') {
+                if (this.gwas['rs10261857-7q31.2']['allele']['two'] == 'r') {
+                    if (Math.random() <= 0.1) {
+                        this.homosexual = true;
+                    }
+                }
+            }
+        }
+
+
     }
 }
 
@@ -343,10 +368,8 @@ function lawOfSeggregation(gene_1, gene_2) {
 
 function randomEvent() {
     // chance of surrgoacy, ivf or reproducing heterosexually
-    //let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
-    // if (chance == 1) {
-    let chance = Math.random();
-    if (chance <= 0.75) {
+    let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
+    if (chance == 1) {
         return true;
     }
     return false;
