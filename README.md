@@ -41,7 +41,7 @@ The simulation ended abruptly, the simulation was intended to be run for 100,000
 
 *Significance of data*
 
-These results indicate what would be expected from a non-breeding species, the number of the existing genotypes within that species decreases and the genotype with a higher chance of survival increases.
+These results indicate what would be expected from a non-breeding genotype, the number of the existing genotypes within that species decreases and the genotype with a higher chance of survival increases.
 
 *Future research*
 
