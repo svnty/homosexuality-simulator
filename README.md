@@ -1,7 +1,7 @@
 # Simulating homosexuality as a Mendelian recessive gene
 *Author:* [Jake S. Walklate](https://www.linkedin.com/in/svnty)
 
-*Topics:* Bioinformatics, Same-sex attraction, Genetics
+*Topics:* Bioinformatics, Same-sex attraction, Genetics, Population simulation
 
 ## Abstract
 Homosexuals have long assumed their sexual proclivities are biologically grounded. A previous genome wide association study identified 5 genes involved in homosexuality, 2 are gender-neutral, 2 are male associated and 1 is female associated, for a male to be homosexual the highest probability will come when all 4 of the genes that are involved in the sexual preference are present, and for women all 3. A simulation was run which investigated the effect of breeding with these genes, all five genes were assumed to be recessive and to be a homosexual a male needed to be homozygous in all 4 genes, for example. The law of segregation was applied to all offspring with the calculated chance of their children inheriting genes from the parent's and homosexuals were given a chance to reproduce each generation of offspring. The data showed that homosexuals were extinct by generation 231. The simulation continued for 50 generations to check for a revival of the homosexual genes, no such case occurred.
