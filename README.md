@@ -31,7 +31,7 @@ A final simulation adjusted for sociological or psychological factors influencin
 
 ![Sociological adjust](https://raw.githubusercontent.com/svnty/Homosexuality-Simulator/main/results/sociological.png)
 
-**Figure 2:** A simulation adjusted for sociological, psychological and environmental factors increasing the chances of homosexual same-sex behaviour. This simulation required 11GB of memory and completed at generation 419 with a starting population of 10,000 and an ending total population of 17689762. 
+**Figure 2:** A simulation adjusted for sociological, psychological and environmental factors increasing the chances of homosexual same-sex behaviour. This simulation required 11GB of memory and completed at generation 419 with a starting population of 10,000 and an ending total population of 17,689,762. 
 
 ## Discussion
 
