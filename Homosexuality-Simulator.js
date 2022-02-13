@@ -367,10 +367,10 @@ function lawOfSeggregation(gene_1, gene_2) {
 
 function randomEvent() {
     // chance of surrgoacy, ivf or reproducing heterosexually
-    //let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
-    //if (chance == 1) {
-    let chance = Math.random();
-    if (chance <= 0.75) {
+    let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
+    if (chance == 1) {
+    // let chance = Math.random();
+    // if (chance <= 0.75) {
         return true;
     }
     return false;
