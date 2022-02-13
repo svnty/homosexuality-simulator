@@ -7,8 +7,8 @@ let homosexual_forced_mate = false;
 let humans = [];
 let donors = [];
 
-const starting_number_of_people = 1_000;
-const starting_percent_as_LGBT = 0.5;
+const starting_number_of_people = 10_000;
+const starting_percent_as_LGBT = 0.2;
 const children_percent_of_generation = [0.02, 0.016];
 const random_event_range = [2, 1];
 const death_range = [90, 70];
@@ -367,10 +367,10 @@ function lawOfSeggregation(gene_1, gene_2) {
 
 function randomEvent() {
     // chance of surrgoacy, ivf or reproducing heterosexually
-    let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
-    if (chance == 1) {
-    // let chance = Math.random();
-    // if (chance <= 0.75) {
+    // let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
+    // if (chance == 1) {
+    let chance = Math.random();
+    if (chance <= 0.75) {
         return true;
     }
     return false;
