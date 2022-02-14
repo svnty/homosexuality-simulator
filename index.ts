@@ -226,8 +226,14 @@ function main() {
         }
 
         // Force random events to occur at the same rate of children expected   
-        let homosexual_percent = homosexual_counter / humans.length;
-        let homosexual_events = Math.ceil(humans.length * child_config.percent * homosexual_percent);
+        let homosexual_percent = homosexual_counter / alive_person_counter;
+        let homosexual_events = Math.ceil(alive_person_counter * child_config.percent * homosexual_percent);
+
+        console.log({
+            offspring: child_config.offspring,
+            homosexuals: homosexual_counter,
+            homosexual_events
+        });
 
         // If there is a large gene pool and a small number of homosexuals this event
         // will trigger to adjust for in group preferential selection of communities and promixity
