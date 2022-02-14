@@ -4,7 +4,7 @@
 
 ```bash
 npm install
-npx tsc index
+node --max-old-space-size=11260 -r ts-node/register .
 ```
 
 ## Read the article
