@@ -3,19 +3,26 @@ const fs = require('fs');
 let human_count = 0;
 let generation = 0;
 let homosexual_mates = 0;
-let homosexual_forced_mate = false;
 let humans = [];
 let donors = [];
+let children_range = 0;
+let child_counter = 0;
+let children_percent = 0;
+let homosexual_counter = 0;
+let homosexual_event_count = 0;
+let total_child_count = 0;
 
-const starting_number_of_people = 10_000;
-const starting_percent_as_LGBT = 0.2;
+const starting_number_of_people = 100;
+const starting_percent_as_LGBT = 0.5;
 const children_percent_of_generation = [0.02, 0.016];
-const random_event_range = [2, 1];
+const random_event_range_toggle = false;
+const random_event_range = [3, 1];
+const random_event_chance = 0.60;
 const death_range = [90, 70];
-const run_off_generation = 50;
+const run_off_generation = 25;
 const breed_range = [20, 50];
 const sociological = true;
-const sociological_chance = 0.3;
+const sociological_chance = 0.1;
 
 class person {
     constructor(parent_1, parent_2, age = 0, homosexual = false, donor = false) {
@@ -90,11 +97,34 @@ class person {
             let parent_2_rs13135637_4p14 = parent_2.gwas['rs13135637-4p14']['allele'];
             this.gwas['rs13135637-4p14']['allele'] = lawOfSeggregation(parent_1_rs13135637_4p14, parent_2_rs13135637_4p14);
         } else {
-            this.gwas['rs11114975-12q21.31']['allele'] = lawOfSeggregation(randomAllele(), randomAllele());
-            this.gwas['rs10261857-7q31.2']['allele'] = lawOfSeggregation(randomAllele(), randomAllele());
-            this.gwas['rs28371400-15q21.3']['allele'] = lawOfSeggregation(randomAllele(), randomAllele());
-            this.gwas['rs34730029-11q12.1']['allele'] = lawOfSeggregation(randomAllele(), randomAllele());
-            this.gwas['rs13135637-4p14']['allele'] = lawOfSeggregation(randomAllele(), randomAllele());
+            if (this.homosexual == true) {
+                this.gwas['rs11114975-12q21.31']['allele'] = {
+                    'one': 'r',
+                    'two': 'r'
+                };
+                this.gwas['rs10261857-7q31.2']['allele'] = {
+                    'one': 'r',
+                    'two': 'r'
+                };
+                this.gwas['rs28371400-15q21.3']['allele'] = {
+                    'one': 'r',
+                    'two': 'r'
+                };
+                this.gwas['rs34730029-11q12.1']['allele'] = {
+                    'one': 'r',
+                    'two': 'r'
+                };
+                this.gwas['rs13135637-4p14']['allele'] = {
+                    'one': 'r',
+                    'two': 'r'
+                };
+            } else {
+                this.gwas['rs11114975-12q21.31']['allele'] = lawOfSeggregation(randomAlleleHeterosexual(), randomAlleleHeterosexual());
+                this.gwas['rs10261857-7q31.2']['allele'] = lawOfSeggregation(randomAlleleHeterosexual(), randomAlleleHeterosexual());
+                this.gwas['rs28371400-15q21.3']['allele'] = lawOfSeggregation(randomAlleleHeterosexual(), randomAlleleHeterosexual());
+                this.gwas['rs34730029-11q12.1']['allele'] = lawOfSeggregation(randomAlleleHeterosexual(), randomAlleleHeterosexual());
+                this.gwas['rs13135637-4p14']['allele'] = lawOfSeggregation(randomAlleleHeterosexual(), randomAlleleHeterosexual());
+            }
         }
 
         // rs11114975-12q21.31 [ALL]
@@ -140,30 +170,26 @@ class person {
             }
         }
 
+        // rs10261857-7q31.2 [ALL] (SOCIOLOGICAL FIX)
         if (Math.random() <= sociological_chance && sociological == true) {
             if (this.gwas['rs10261857-7q31.2']['allele']['one'] == 'r') {
                 if (this.gwas['rs10261857-7q31.2']['allele']['two'] == 'r') {
-                        this.homosexual = true;
+                    this.homosexual = true;
                 }
             }
         }
-
-
     }
 }
 
-function randomAllele() {
-    alleles = [{
+function randomAlleleHeterosexual() {
+    let alleles = [{
         'one': 'R',
         'two': 'R'
     }, {
         'one': 'R',
         'two': 'r'
-    }, {
-        'one': 'r',
-        'two': 'r'
     }];
-    let num = Math.floor(Math.random() * (3 - 0) + 0);
+    let num = Math.floor(Math.random() * (2 - 0) + 0);
     return alleles[num];
 }
 
@@ -172,16 +198,18 @@ function lawOfSeggregation(gene_1, gene_2) {
     // [R][RR][RR]
     // [R][RR][RR]
     if (gene_1['one'] == 'R' && gene_1['two'] == 'R') {  //Row
-        if (gene_2['one'] == 'R' && gene_2['two'] == 'R')  //Column
+        if (gene_2['one'] == 'R' && gene_2['two'] == 'R') { //Column
             return { 'one': 'R', 'two': 'R' }
+        }
     }
 
     // [ ][r] [r]
     // [r][rr][rr]
     // [r][rr][rr]
     if (gene_1['one'] == 'r' && gene_1['two'] == 'r') {  //Row
-        if (gene_2['one'] == 'r' && gene_2['two'] == 'r')  //Column
+        if (gene_2['one'] == 'r' && gene_2['two'] == 'r') { //Column
             return { 'one': 'r', 'two': 'r' }
+        }
     }
 
     // [ ][R] [R]
@@ -190,10 +218,12 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'R' && gene_1['two'] == 'R') {  //Row
         if (gene_2['one'] == 'R' && gene_2['two'] == 'r') { //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'R' }
-            if (random_chance == 1)
+            }
+            if (random_chance == 1) {
                 return { 'one': 'R', 'two': 'r' }
+            }
         }
     }
 
@@ -203,10 +233,12 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'R' && gene_1['two'] == 'R') {  //Row
         if (gene_2['one'] == 'r' && gene_2['two'] == 'R') { //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'R' }
-            if (random_chance == 1)
+            }
+            if (random_chance == 1) {
                 return { 'one': 'R', 'two': 'r' }
+            }
         }
     }
 
@@ -216,10 +248,12 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'R' && gene_1['two'] == 'r') {  //Row
         if (gene_2['one'] == 'R' && gene_2['two'] == 'R') {  //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'R' }
-            if (random_chance == 1)
+            }
+            if (random_chance == 1) {
                 return { 'one': 'R', 'two': 'r' }
+            }
         }
     }
 
@@ -229,10 +263,12 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'r' && gene_1['two'] == 'R') { //Row
         if (gene_2['one'] == 'R' && gene_2['two'] == 'R') {  //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'R' }
-            if (random_chance == 1)
+            }
+            if (random_chance == 1) {
                 return { 'one': 'R', 'two': 'r' }
+            }
         }
     }
 
@@ -242,12 +278,15 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'R' && gene_1['two'] == 'r') {  //Row
         if (gene_2['one'] == 'R' && gene_2['two'] == 'r') {  //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'R' }
-            if (random_chance == 1 || random_chance == 2)
+            }
+            if (random_chance == 1 || random_chance == 2) {
                 return { 'one': 'R', 'two': 'r' }
-            if (random_chance == 3)
+            }
+            if (random_chance == 3) {
                 return { 'one': 'r', 'two': 'r' }
+            }
         }
     }
 
@@ -257,12 +296,15 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'r' && gene_1['two'] == 'R') {  //Row
         if (gene_2['one'] == 'R' && gene_2['two'] == 'r') {  //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'R' }
-            if (random_chance == 1 || random_chance == 2)
+            }
+            if (random_chance == 1 || random_chance == 2) {
                 return { 'one': 'R', 'two': 'r' }
-            if (random_chance == 3)
+            }
+            if (random_chance == 3) {
                 return { 'one': 'r', 'two': 'r' }
+            }
         }
     }
 
@@ -272,12 +314,15 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'R' && gene_1['two'] == 'r') {  //Row
         if (gene_2['one'] == 'r' && gene_2['two'] == 'R') {  //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'R' }
-            if (random_chance == 1 || random_chance == 2)
+            }
+            if (random_chance == 1 || random_chance == 2) {
                 return { 'one': 'R', 'two': 'r' }
-            if (random_chance == 3)
+            }
+            if (random_chance == 3) {
                 return { 'one': 'r', 'two': 'r' }
+            }
         }
     }
 
@@ -287,12 +332,15 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'r' && gene_1['two'] == 'R') {  //Row
         if (gene_2['one'] == 'r' && gene_2['two'] == 'R') {  //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'R' }
-            if (random_chance == 1 || random_chance == 2)
+            }
+            if (random_chance == 1 || random_chance == 2) {
                 return { 'one': 'R', 'two': 'r' }
-            if (random_chance == 3)
+            }
+            if (random_chance == 3) {
                 return { 'one': 'r', 'two': 'r' }
+            }
         }
     }
 
@@ -300,16 +348,18 @@ function lawOfSeggregation(gene_1, gene_2) {
     // [r][Rr][Rr]
     // [r][Rr][Rr]
     if (gene_1['one'] == 'R' && gene_1['two'] == 'R') {  //Row
-        if (gene_2['one'] == 'r' && gene_2['two'] == 'r')  //Column
+        if (gene_2['one'] == 'r' && gene_2['two'] == 'r') { //Column
             return { 'one': 'R', 'two': 'r' }
+        }
     }
 
     // [ ][r] [r]
     // [R][Rr][Rr]
     // [R][Rr][Rr]
     if (gene_1['one'] == 'r' && gene_1['two'] == 'r') {  //Row
-        if (gene_2['one'] == 'R' && gene_2['two'] == 'R') //Column
+        if (gene_2['one'] == 'R' && gene_2['two'] == 'R') { //Column
             return { 'one': 'R', 'two': 'r' }
+        }
     }
 
     // [ ][R] [r]
@@ -318,10 +368,12 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'R' && gene_1['two'] == 'r') {  //Row
         if (gene_2['one'] == 'r' && gene_2['two'] == 'r') {  //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'r' }
-            if (random_chance == 1)
+            }
+            if (random_chance == 1) {
                 return { 'one': 'r', 'two': 'r' }
+            }
         }
     }
 
@@ -331,10 +383,12 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'r' && gene_1['two'] == 'R') { //  //Row
         if (gene_2['one'] == 'r' && gene_2['two'] == 'r') { //Column
             let random_chance = random.randint(0, 1)
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'r' }
-            if (random_chance == 1)
+            }
+            if (random_chance == 1) {
                 return { 'one': 'r', 'two': 'r' }
+            }
         }
     }
 
@@ -344,10 +398,12 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'r' && gene_1['two'] == 'r') {  //Row
         if (gene_2['one'] == 'R' && gene_2['two'] == 'r') {  //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'r' }
-            if (random_chance == 1)
+            }
+            if (random_chance == 1) {
                 return { 'one': 'r', 'two': 'r' }
+            }
         }
     }
 
@@ -357,21 +413,27 @@ function lawOfSeggregation(gene_1, gene_2) {
     if (gene_1['one'] == 'r' && gene_1['two'] == 'r') {  //Row
         if (gene_2['one'] == 'r' && gene_2['two'] == 'R') {  //Column
             let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
-            if (random_chance == 0)
+            if (random_chance == 0) {
                 return { 'one': 'R', 'two': 'r' }
-            if (random_chance == 1)
+            }
+            if (random_chance == 1) {
                 return { 'one': 'r', 'two': 'r' }
+            }
         }
     }
 }
 
 function randomEvent() {
     // chance of surrgoacy, ivf or reproducing heterosexually
-    // let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
-    // if (chance == 1) {
-    let chance = Math.random();
-    if (chance <= 0.75) {
-        return true;
+    if (random_event_range_toggle == true) {
+        let chance = Math.floor(Math.random() * (random_event_range[0] - random_event_range[1])) + random_event_range[1];
+        if (chance == 1) {
+            return true;
+        }
+    } else {
+        if (Math.random() <= random_event_chance) {
+            return true;
+        }
     }
     return false;
 }
@@ -395,12 +457,13 @@ function mate(parent_1, parent_2) {
     // Homosexual couple
     // Using OR instead of AND to consider bisexuals
     if (parent_1.homosexual == true || parent_2.homosexual == true) {
-        homosexual_forced_mate = true;
+        homosexual_event_count = homosexual_event_count + 1;
         if (randomEvent() == true) {
             let donor = getDonor(parent_1);
             if (donor != false) {
                 homosexual_mates += 1;
                 let new_human = new person(parent_1, parent_2);
+                total_child_count = total_child_count + 1;
                 humans.push(new_human);
             }
         }
@@ -408,6 +471,7 @@ function mate(parent_1, parent_2) {
     // Heterosexual couple
     if (parent_1.homosexual != true && parent_2.homosexual != true) {
         let new_human = new person(parent_1, parent_2);
+        total_child_count = total_child_count + 1;
         humans.push(new_human);
     }
 }
@@ -428,7 +492,7 @@ function checkMate(parent_1, parent_2) {
 
 function checkExtinct(save) {
     let extinct = true;
-    let homosexual_counter = 0;
+    homosexual_counter = 0;
     let person_counter = 0;
     for (let human of humans) {
         if (human.dead == false) {
@@ -454,25 +518,37 @@ function childPerGeneration() {
 }
 
 function main() {
-    while (humans.length < starting_number_of_people || checkExtinct()) {
-        let homosexuality_random = Math.random() > starting_percent_as_LGBT ? 0 : 1;
+    // Create homosexuals
+    for (let i = 0; i < (starting_number_of_people * starting_percent_as_LGBT); i++) {
         let donor_random = Math.floor(Math.random() * (2 - 0)) + 0;
-        let new_human = new person(null, null, 21, homosexuality_random, donor_random);
+        let new_human = new person(null, null, 21, true, donor_random);
         humans.push(new_human);
         if (new_human.donor) {
             donors.push(new_human)
         }
     }
 
+    // Create heterosexuals
+    while (humans.length < starting_number_of_people) {
+        let donor_random = Math.floor(Math.random() * (2 - 0)) + 0;
+        let new_human = new person(null, null, 21, false, donor_random);
+        humans.push(new_human);
+        if (new_human.donor) {
+            donors.push(new_human)
+        }
+    }
+
+    // Run program
     let run_off_count_down = 0;
     while (checkExtinct(true) == false || run_off_count_down < run_off_generation) {
+        // Increment genration
+        generation += 1;
+        // If homosexuals are extinct, add 1 to the run off counter
         is_extinct = checkExtinct(false);
         if (is_extinct == true) {
             run_off_count_down += 1;
         }
-        write('__');
-        generation += 1;
-        write(generation);
+        // Let humans die
         for (let human of humans) {
             let random_age = Math.floor(Math.random() * (death_range[0] - death_range[1])) + death_range[1];
             if (human.age > random_age) {
@@ -481,58 +557,66 @@ function main() {
                 human.age += 1;
             }
         }
+        // Write data
+        write('__');
+        write(generation);
 
-        let children = childPerGeneration();
-        let max = children[0];
-        let min = children[1];
-        let child_counter = Math.floor(Math.random() * (max - min)) + min;
-        let total_child_count = child_counter;
+        // Set variables
+        children_range = childPerGeneration();
+        child_counter = Math.floor(Math.random() * (children_range[0] - children_range[1])) + children_range[1];
+        children_percent = child_counter/(humans.length);
+        total_child_count = child_counter;
         homosexual_mates = 0;
+        // write expected children
         write(child_counter);
-        homosexual_forced_mate = false;
 
+        // Create children
         for (let i = 0; i < child_counter; i++) {
             let parent_1;
             let parent_2;
-            while (checkMate(parent_1, parent_2) != true) {
+            while (checkMate(parent_1, parent_2) == false) {
                 parent_1 = humans[Math.floor(Math.random() * humans.length)];
                 parent_2 = humans[Math.floor(Math.random() * humans.length)];
             }
             mate(parent_1, parent_2);
         }
 
+        // Force random events to occur at the same rate of children expected
+        let any_breed_eligible = false;
         let reverse_walker = humans.length - 1;
-        // Forcing at least the chance of 1 homosexual mating per generation
-        for (; ;) {
-            if (homosexual_forced_mate == true) {
-                break;
-            }
-            if (is_extinct == true) {
-                break;
-            }
-            let breeding_age_gay = false;
-            for (const gay_check of humans) {
-                if (gay_check.homosexual) {
-                    if (gay_check.age >= 20) {
-                        if (!gay_check.dead) {
-                            breeding_age = true;
+        let homosexual_percent = homosexual_counter/humans.length;
+        let homosexual_events = Math.ceil(humans.length * children_percent * homosexual_percent);
+        homosexual_event_count = 0;
+
+        // If there is a large gene pool and a small number of homosexuals this event
+        // will trigger to adjust for in group preferential selection of communities and promixity
+        while (homosexual_event_count < homosexual_events) {
+            for (const human of humans) {
+                if (human.homosexual == true) {
+                    if (human.age >= breed_range[0]) {
+                        if (human.age <= breed_range[1]) {
+                            if (human.dead == false) {
+                                any_breed_eligible = true;
+                            }
                         }
                     }
                 }
             }
-            if (breeding_age_gay == false) {
+            if (any_breed_eligible == false) {
                 break;
             }
             let parent_1;
             let parent_2;
-            while (checkMate(parent_1, parent_2) != true) {
+            while (checkMate(parent_1, parent_2) == false) {
                 parent_1 = humans[Math.floor(Math.random() * humans.length)];
                 parent_2 = humans[reverse_walker];
-                console.log(reverse_walker);
                 reverse_walker = reverse_walker - 1;
+                // Reset walker due to random parent 1
+                if (reverse_walker <= 0) {
+                    reverse_walker = humans.length - 1;
+                }
             }
             if (parent_1.homosexual == true || parent_2.homosexual == true) {
-                total_child_count = child_counter + 1;
                 mate(parent_1, parent_2);
             }
         }
