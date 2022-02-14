@@ -13,11 +13,11 @@ let homosexual_event_count = 0;
 let total_child_count = 0;
 
 const starting_number_of_people = 100;
-const starting_percent_as_LGBT = 0.5;
-const children_percent_of_generation = [0.02, 0.016];
-const random_event_range_toggle = false;
-const random_event_range = [3, 1];
-const random_event_chance = 0.60;
+const starting_percent_as_LGBT = 0.1;
+const children_percent_of_generation = [0.035, 0.03];
+const random_event_range_toggle = true; // don't turn off, code broken
+const random_event_range = [5, 0];
+// const random_event_chance = 0.75; // fails
 const death_range = [90, 70];
 const run_off_generation = 25;
 const breed_range = [20, 50];
@@ -158,9 +158,6 @@ class person {
                             // rs13135637-4p14 [FEMALE ONLY]
                             if (this.gwas['rs13135637-4p14']['allele']['one'] == 'r') {
                                 if (this.gwas['rs13135637-4p14']['allele']['two'] == 'r') {
-                                    if (Math.random() <= sociological_chance && sociological == true) {
-                                        this.homosexual = true;
-                                    }
                                     this.homosexual = true;
                                 }
                             }
@@ -431,9 +428,10 @@ function randomEvent() {
             return true;
         }
     } else {
-        if (Math.random() <= random_event_chance) {
-            return true;
-        }
+        // fail
+        // if (Math.random() <= random_event_chance) {
+        //     return true;
+        // }
     }
     return false;
 }
@@ -570,20 +568,40 @@ function main() {
         // write expected children
         write(child_counter);
 
+        // Javascript is so slow
+        let shorten_humans = humans;
+        if (humans.length > 10,000 && humans.length < 100,000) {
+            shorten_humans = humans.slice(-(Math.floor(humans.length/2)))
+        }
+        if (humans.length > 100,000 && humans.length < 500,000) {
+            shorten_humans = humans.slice(-(Math.floor(humans.length/3)));
+        }
+        if (humans.length > 500,000 && humans.length < 1,000,000) {
+            shorten_humans = humans.slice(-(Math.floor(humans.length/5)));
+        }
+        if (humans.length > 1,000,000 && humans.length < 10,000,000) {
+            shorten_humans = humans.slice(-(Math.floor(humans.length/7)));
+        }
+        let reverse_walker = shorten_humans.length - 1;
+
         // Create children
         for (let i = 0; i < child_counter; i++) {
             let parent_1;
             let parent_2;
             while (checkMate(parent_1, parent_2) == false) {
-                parent_1 = humans[Math.floor(Math.random() * humans.length)];
-                parent_2 = humans[Math.floor(Math.random() * humans.length)];
+                parent_1 = shorten_humans[Math.floor(Math.random() * shorten_humans.length)];
+                parent_2 = shorten_humans[reverse_walker];
+                reverse_walker = reverse_walker - 1;
+                // Reset walker due to random parent 1
+                if (reverse_walker <= 0) {
+                    reverse_walker = shorten_humans.length - 1;
+                }
             }
             mate(parent_1, parent_2);
         }
 
         // Force random events to occur at the same rate of children expected
         let any_breed_eligible = false;
-        let reverse_walker = humans.length - 1;
         let homosexual_percent = homosexual_counter/humans.length;
         let homosexual_events = Math.ceil(humans.length * children_percent * homosexual_percent);
         homosexual_event_count = 0;
@@ -608,12 +626,12 @@ function main() {
             let parent_1;
             let parent_2;
             while (checkMate(parent_1, parent_2) == false) {
-                parent_1 = humans[Math.floor(Math.random() * humans.length)];
-                parent_2 = humans[reverse_walker];
+                parent_1 = shorten_humans[Math.floor(Math.random() * shorten_humans.length)];
+                parent_2 = shorten_humans[reverse_walker];
                 reverse_walker = reverse_walker - 1;
                 // Reset walker due to random parent 1
                 if (reverse_walker <= 0) {
-                    reverse_walker = humans.length - 1;
+                    reverse_walker = shorten_humans.length - 1;
                 }
             }
             if (parent_1.homosexual == true || parent_2.homosexual == true) {
@@ -638,7 +656,7 @@ function write(line) {
 
 function initText() {
     fs.appendFileSync('results.txt', 'generation,calculated_children,children_created,random_event_child,homosexuals,alive_population,total_population\n');
-    fs.appendFileSync('results.txt', '0,0,0,');
+    fs.appendFileSync('results.txt', '0,0,0,0,');
 }
 
 initText();
