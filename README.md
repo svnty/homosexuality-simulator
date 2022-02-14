@@ -1,3 +1,5 @@
-```npm install
+```bash
+npm install
 
-npx tsc index```
+npx tsc index
+```
