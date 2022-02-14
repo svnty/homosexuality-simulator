@@ -1,4 +1,4 @@
-import { appendFile, appendFileSync, writeFileSync } from 'fs';
+import { appendFileSync, writeFileSync } from 'fs';
 import { Person } from './assets/Person';
 import CONFIG from './assets/configuration';
 
