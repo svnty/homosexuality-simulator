@@ -10,7 +10,11 @@ let humans: Person[] = [];
 let offspring: number = 0;
 let alive_person_counter: number = 0;
 let homosexual_counter: number = 0;
-let homosexual_event_counter = 0;
+let random_event_counter: number = 0;
+let random_events_expected: number = 0;
+let random_event_offspring_counter: number = 0;
+let homosexual_offspring_counter: number = 0;
+let homosexual_percent = CONFIG.starting_lgbt_percent;
 let offspring_counter = 0;
 let run_off_counter: number = 0;
 let homosexual_breeders_extinct: boolean = true;
@@ -42,30 +46,31 @@ function mate(parent_1?: Person, parent_2?: Person): boolean {
     // Homosexual couple
     if (parent_1 && parent_2) {
         if (parent_1.homosexual == true || parent_2.homosexual == true) {
-            homosexual_event_counter += 1;
+            random_event_counter += 1;
             if (randomEvent() == true) {
+                random_event_offspring_counter += 1;
                 if (parent_1.gender == parent_2.gender) {
                     let donor = getDonor(parent_1);
                     if (donor != false) {
-                        let new_human = new Person(parent_1, parent_2);
-                        offspring_counter = offspring_counter + 1;
-                        humans.push(new_human);
+                        newHuman(parent_1,parent_2);
                         return true;
                     }
                 } else if (parent_1.gender != parent_2.gender) {
-                    let new_human = new Person(parent_1, parent_2);
-                    offspring_counter = offspring_counter + 1;
-                    humans.push(new_human);
+                    newHuman(parent_1,parent_2);
                     return true;
                 }
             }
-        }
-        // Heterosexual couple
-        if (parent_1.homosexual != true && parent_2.homosexual != true) {
-            let new_human = new Person(parent_1, parent_2);
-            offspring_counter = offspring_counter + 1;
-            humans.push(new_human);
+        } else {
+            newHuman(parent_1, parent_2);
             return true;
+        }
+        function newHuman(parent_1: Person, parent_2: Person) {
+            let new_human = new Person(parent_1, parent_2);
+            offspring_counter += 1;
+            humans.push(new_human);
+            if (new_human.homosexual == true) {
+                homosexual_offspring_counter += 1;
+            }
         }
     }
     return false;
@@ -136,15 +141,15 @@ function setChildPerGeneration(): { offspring: number, percent: number } {
 }
 
 function write(): boolean {
-    let text = generation + ',' + offspring + ',' + offspring_counter + ',' + homosexual_event_counter + ',' + homosexual_counter + ',' + alive_person_counter + ',' + humans.length + '\n';
+    let text = generation + ',' + offspring + ',' + offspring_counter + ',' + random_events_expected + ',' + random_event_counter + ',' + random_event_offspring_counter + ',' + homosexual_counter + ',' + homosexual_percent +  ',' + alive_person_counter + ',' + humans.length + '\n';
     appendFileSync('results.txt', text);
     return true;
 }
 
 function initText(): boolean {
     writeFileSync('results.txt', JSON.stringify(CONFIG) + '\n');
-    appendFileSync('results.txt', 'Generation,Expected Offspring,Total Offspring,Random Event Offspring (Homosexual Parent) [IVF/Surrogacy/Bi-Sexual],Alive Homosexuals,Alive Population,Total Population (Alive + Dead)\n');
-    let text = 0 + ',' + 0 + ',' + 0 + ',' + 0 + ',' + (humans.length * CONFIG.starting_lgbt_percent) + ',' + humans.length + ',' + humans.length + '\n';
+    appendFileSync('results.txt', 'Generation,Expected Offspring,Total Offspring,Random Events Expected,Random Events Triggered,Random Event Offspring (Homosexual Parent) [IVF/Surrogacy/Bi-Sexual],Alive Homosexuals,Homosexuals as percent of population,Alive Population,Total Population (Alive + Dead)\n');
+    let text = 0 + ',' + 0 + ',' + 0 + ',' + 0 + ',' + 0 + ',' + 0 + ',' + (humans.length * CONFIG.starting_lgbt_percent) + ',' + homosexual_percent + ',' + humans.length + ',' + humans.length + '\n';
     appendFileSync('results.txt', text);
     return true;
 }
@@ -161,93 +166,69 @@ function initPopulation(): boolean {
     // Create heterosexuals
     while (humans.length < CONFIG.starting_population) {
         let donor_random: boolean = (Math.floor(Math.random() * (2 - 0)) + 0) == 1 ? true : false;
-        let age: number = Math.floor(Math.random() * (25 - 1) + 1);
+        let age: number = Math.floor(Math.random() * (50 - 1) + 1);
         let new_human = new Person(undefined, undefined, age, false, donor_random);
         humans.push(new_human);
     }
     return true;
 }
 
-function shortenHumanArray(humans: Person[]): Person[] {
-    let len: number = humans.length;
-    let short: Person[] = [];
-    if (len < 10000) {
-        return humans;
-    }
-    if (len > 10000 && len < 300000) {
-        short = humans.splice(-(Math.floor(humans.length / 2)));
-    }
-    if (len > 300000 && len < 500000) {
-        short = humans.splice(-(Math.floor(humans.length / 3)));
-    }
-    if (len > 500000 && len < 1000000) {
-        short = humans.splice(-(Math.floor(humans.length / 4)));
-    }
-    if (len > 1000000 && len < 1500000) {
-        short = humans.splice(-(Math.floor(humans.length / 5)));
-    }
-    if (len > 1500000) {
-        short = humans.splice(-(Math.floor(humans.length / 10)));
-    }
-    return short;
-}
-
 function main() {
     initPopulation();
     initText();
     while (checkExtinct(false) == false || run_off_counter < CONFIG.run_off) {
+        // Increment generation
         generation += 1;
+        // Reset variables
         offspring_counter = 0;
+        homosexual_offspring_counter = 0;
+        random_event_counter = 0;
+        random_event_offspring_counter = 0;
+        random_events_expected = 0;
+
+        // Check extinct
         const is_extinct = checkExtinct(true);
         if (is_extinct) {
             run_off_counter += 1;
         }
 
+        // Calculate children
         let child_config = setChildPerGeneration();
-        //let short = shortenHumanArray(humans);
-        let short = humans;
-        let reverse_walker = short.length - 1;
-        homosexual_event_counter = 0;
+        let reverse_walker = humans.length - 1;
 
         // Create children
         for (let i = 0; i < child_config.offspring; i++) {
             let parent_1!: Person;
             let parent_2!: Person;
             while (checkMate(parent_1, parent_2) == false) {
-                parent_1 = short[Math.floor(Math.random() * short.length)];
-                parent_2 = short[reverse_walker];
+                parent_1 = humans[Math.floor(Math.random() * humans.length)];
+                parent_2 = humans[reverse_walker];
                 reverse_walker -= 1;
                 // Reset walker due to random parent 1
                 if (reverse_walker <= 0) {
-                    reverse_walker = short.length - 1;
+                    reverse_walker = humans.length - 1;
                 }
             }
             mate(parent_1, parent_2);
         }
 
         // Force random events to occur at the same rate of children expected   
-        let homosexual_percent = homosexual_counter / alive_person_counter;
-        let homosexual_events = Math.ceil(alive_person_counter * child_config.percent * homosexual_percent);
-
-        console.log({
-            offspring: child_config.offspring,
-            homosexuals: homosexual_counter,
-            homosexual_events
-        });
+        homosexual_percent = homosexual_counter / alive_person_counter;
+        random_events_expected = Math.ceil(alive_person_counter * child_config.percent * homosexual_percent);
 
         // If there is a large gene pool and a small number of homosexuals this event
         // will trigger to adjust for in group preferential selection of communities and promixity
-        while (homosexual_event_counter < homosexual_events && homosexual_breeders_extinct == false) {
+        while (random_event_counter < random_events_expected && homosexual_breeders_extinct == false) {
             let parent_1: Person | undefined;
             let parent_2: Person | undefined;
 
             while (checkMate(parent_1, parent_2) == false) {
-                parent_1 = short[Math.floor(Math.random() * short.length)];
-                parent_2 = short[reverse_walker];
+                parent_1 = humans[Math.floor(Math.random() * humans.length)];
+                parent_2 = humans[reverse_walker];
                 reverse_walker = reverse_walker - 1;
                 // Reset walker due to random parent 1
                 if (reverse_walker <= 0) {
-                    reverse_walker = short.length - 1;
+                    reverse_walker = humans.length - 1;
                 }
             }
             if (parent_1 && parent_2) {
