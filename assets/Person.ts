@@ -6,15 +6,15 @@ type Gene = {
 }
 
 export class Person {
-    parent_1?: Person;
-    parent_2?: Person
-    homosexual: boolean;
-    dead: boolean;
-    birth_year: number;
-    age: number;
-    donor: boolean;
-    gender: string;
-    gwas: {
+    private parent_1?: Person;
+    private parent_2?: Person
+    private homosexual: boolean;
+    private dead: boolean;
+    private birth_year: number;
+    private age: number;
+    private donor: boolean;
+    private gender: string;
+    private gwas: {
         // [ALL]
         'rs11114975-12q21.31': {
             'allele': Gene
@@ -99,7 +99,7 @@ export class Person {
         }
     }
 
-    setAlleles(parent_1?: Person, parent_2?: Person): void {
+    private setAlleles(parent_1?: Person, parent_2?: Person): void {
         if (parent_1 && parent_2) {
             let parent_1_rs11114975_12q21_31 = parent_1.gwas['rs11114975-12q21.31']['allele'];
             let parent_2_rs11114975_12q21_31 = parent_2.gwas['rs11114975-12q21.31']['allele'];
@@ -162,7 +162,7 @@ export class Person {
         }
     }
 
-    setHomosexual(): void {
+    private setHomosexual(): void {
         // rs11114975-12q21.31 [ALL]
         if (this.gwas['rs11114975-12q21.31']['allele']['one'] == 'r') {
             if (this.gwas['rs11114975-12q21.31']['allele']['two'] == 'r') {
@@ -193,10 +193,9 @@ export class Person {
                 }
             }
         }
-        this.homosexual = false;
     }
 
-    sociologicalFix(): void {
+    private sociologicalFix(): void {
         // rs10261857-7q31.2 [ALL]
         if (this.gwas['rs10261857-7q31.2']['allele']['one'] == 'r') {
             if (this.gwas['rs10261857-7q31.2']['allele']['two'] == 'r') {
@@ -243,7 +242,7 @@ export class Person {
         }
     }
 
-    lawOfSeggregation(gene_1: Gene, gene_2: Gene): Gene {
+    private lawOfSeggregation(gene_1: Gene, gene_2: Gene): Gene {
         // [ ][R] [R]
         // [R][RR][RR]
         // [R][RR][RR]
@@ -475,7 +474,7 @@ export class Person {
         return this.randomAllele();
     }
 
-    randomAlleleHeterosexual(): Gene {
+    private randomAlleleHeterosexual(): Gene {
         const alleles: Gene[] = [{
             'one': 'R',
             'two': 'R'
@@ -487,7 +486,7 @@ export class Person {
         return alleles[num];
     }
 
-    randomAllele(): Gene {
+    private randomAllele(): Gene {
         const alleles: Gene[] = [{
             'one': 'R',
             'two': 'R'
@@ -501,4 +500,29 @@ export class Person {
         const num = Math.floor(Math.random() * (3 - 0) + 0);
         return alleles[num];
     }
+
+    public setDeadStatus(dead: boolean): void {
+        this.dead = dead;
+    }
+
+    public getHomosexualStatus(): boolean {
+        return this.homosexual;
+    }
+
+    public getDonorStatus(): boolean {
+        return this.donor;
+    }
+
+    public getDeadStatus(): boolean {
+        return this.dead;
+    }
+
+    public getGender(): string {
+        return this.gender;
+    }
+
+    public getAge(): number {
+        return this.age;
+    }
+    
 }
