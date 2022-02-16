@@ -1,11 +1,11 @@
 export default {
-    "starting_population": 100_000,
-    "starting_lgbt_percent": 0.05,
+    "starting_population": 1_000,
+    "starting_lgbt_percent": 0,
     "offspring_percent": [0.0175, 0.013],
-    "random_event_chance": 0.99,
+    "random_event_chance": -1,
     "death_range": [90, 70],
     "breed_range": [20, 50],
-    "sociological_toggle": true,
-    "sociological_chance": 0.99,
-    "run_off": 25
+    "sociological_toggle": false,
+    "sociological_chance": 0.1,
+    "run_off": 2500
 }

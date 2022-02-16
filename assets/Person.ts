@@ -10,57 +10,44 @@ export class Person {
     parent_2?: Person
     homosexual: boolean;
     dead: boolean;
+    birth_year: number;
     age: number;
     donor: boolean;
     gender: string;
     gwas: {
+        // [ALL]
         'rs11114975-12q21.31': {
-            //'gender': 'ALL',
-            'allele': {
-                'one': string,
-                'two': string
-            }
+            'allele': Gene
         },
         'rs10261857-7q31.2': {
-            //'gender': 'ALL',
-            'allele': {
-                'one': string,
-                'two': string
-            }
+            'allele': Gene
         },
+        // [MALE ONLY]
         'rs28371400-15q21.3': {
-            //'gender': 'M',
-            'allele': {
-                'one': string,
-                'two': string
-            }
+            'allele': Gene
         },
         'rs34730029-11q12.1': {
-            //'gender': 'M',
-            'allele': {
-                'one': string,
-                'two': string
-            }
+            'allele': Gene
         },
+        // [FEMALE ONLY]
         'rs13135637-4p14': {
-            //'gender': 'F',
-            'allele': {
-                'one': string,
-                'two': string
-            }
+            'allele': Gene
         }
     };
 
-    constructor(parent_1?: Person, parent_2?: Person, age: number = 0, homosexual: boolean = false, donor: boolean = false) {
+    constructor(parent_1?: Person, parent_2?: Person, age: number = 0, homosexual: boolean = false, donor: boolean = false, year: number = 0) {
         this.parent_1 = parent_1;
         this.parent_2 = parent_2;
         this.homosexual = homosexual;
         this.dead = false;
         this.age = age;
+        this.birth_year = year;
+
         if (donor == true)
             this.donor = donor;
-        else    
-            this.donor = Math.random() > 0.5 ? true : false;
+        else
+            this.donor = (Math.random() <= 0.5) ? true : false;
+
         this.gwas = {
             'rs11114975-12q21.31': {
                 //'gender': 'ALL',
@@ -112,7 +99,7 @@ export class Person {
         }
     }
 
-    setAlleles(parent_1?: Person, parent_2?: Person) {
+    setAlleles(parent_1?: Person, parent_2?: Person): void {
         if (parent_1 && parent_2) {
             let parent_1_rs11114975_12q21_31 = parent_1.gwas['rs11114975-12q21.31']['allele'];
             let parent_2_rs11114975_12q21_31 = parent_2.gwas['rs11114975-12q21.31']['allele'];
@@ -131,26 +118,40 @@ export class Person {
             this.gwas['rs13135637-4p14']['allele'] = this.lawOfSeggregation(parent_1_rs13135637_4p14, parent_2_rs13135637_4p14);
         } else {
             if (this.homosexual == true) {
-                this.gwas['rs11114975-12q21.31']['allele'] = {
-                    'one': 'r',
-                    'two': 'r'
-                };
-                this.gwas['rs10261857-7q31.2']['allele'] = {
-                    'one': 'r',
-                    'two': 'r'
-                };
-                this.gwas['rs28371400-15q21.3']['allele'] = {
-                    'one': 'r',
-                    'two': 'r'
-                };
-                this.gwas['rs34730029-11q12.1']['allele'] = {
-                    'one': 'r',
-                    'two': 'r'
-                };
-                this.gwas['rs13135637-4p14']['allele'] = {
-                    'one': 'r',
-                    'two': 'r'
-                };
+                if (this.gender == 'M') {
+                    this.gwas['rs11114975-12q21.31']['allele'] = {
+                        'one': 'r',
+                        'two': 'r'
+                    };
+                    this.gwas['rs10261857-7q31.2']['allele'] = {
+                        'one': 'r',
+                        'two': 'r'
+                    };
+                    this.gwas['rs28371400-15q21.3']['allele'] = {
+                        'one': 'r',
+                        'two': 'r'
+                    };
+                    this.gwas['rs34730029-11q12.1']['allele'] = {
+                        'one': 'r',
+                        'two': 'r'
+                    };
+                    this.gwas['rs13135637-4p14']['allele'] = this.randomAllele();
+                } else if (this.gender == 'F') {
+                    this.gwas['rs11114975-12q21.31']['allele'] = {
+                        'one': 'r',
+                        'two': 'r'
+                    };
+                    this.gwas['rs10261857-7q31.2']['allele'] = {
+                        'one': 'r',
+                        'two': 'r'
+                    };
+                    this.gwas['rs28371400-15q21.3']['allele'] = this.randomAllele();
+                    this.gwas['rs34730029-11q12.1']['allele'] = this.randomAllele();
+                    this.gwas['rs13135637-4p14']['allele'] = {
+                        'one': 'r',
+                        'two': 'r'
+                    };
+                }
             } else {
                 this.gwas['rs11114975-12q21.31']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
                 this.gwas['rs10261857-7q31.2']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
@@ -161,7 +162,7 @@ export class Person {
         }
     }
 
-    setHomosexual() {
+    setHomosexual(): void {
         // rs11114975-12q21.31 [ALL]
         if (this.gwas['rs11114975-12q21.31']['allele']['one'] == 'r') {
             if (this.gwas['rs11114975-12q21.31']['allele']['two'] == 'r') {
@@ -192,11 +193,11 @@ export class Person {
                 }
             }
         }
+        this.homosexual = false;
     }
 
-    sociologicalFix() {
-        // [ALL]
-        // rs10261857-7q31.2
+    sociologicalFix(): void {
+        // rs10261857-7q31.2 [ALL]
         if (this.gwas['rs10261857-7q31.2']['allele']['one'] == 'r') {
             if (this.gwas['rs10261857-7q31.2']['allele']['two'] == 'r') {
                 if (Math.random() <= CONFIG.sociological_chance) {
@@ -212,9 +213,8 @@ export class Person {
                 }
             }
         }
-        // [MALE ONLY]
         if (this.gender == 'M') {
-            // rs28371400-15q21.3 
+            // rs28371400-15q21.3 [MALE ONLY]
             if (this.gwas['rs28371400-15q21.3']['allele']['one'] == 'r') {
                 if (this.gwas['rs28371400-15q21.3']['allele']['two'] == 'r') {
                     if (Math.random() <= CONFIG.sociological_chance) {
@@ -222,8 +222,7 @@ export class Person {
                     }
                 }
             }
-            // [MALE ONLY]
-            // rs34730029-11q12.1
+            // rs34730029-11q12.1 [MALE ONLY]
             if (this.gwas['rs34730029-11q12.1']['allele']['one'] == 'r') {
                 if (this.gwas['rs34730029-11q12.1']['allele']['two'] == 'r') {
                     if (Math.random() <= CONFIG.sociological_chance) {
@@ -232,9 +231,8 @@ export class Person {
                 }
             }
         }
-        // [FEMALE ONLY]
         if (this.gender == 'F') {
-            // rs13135637-4p14
+            // rs13135637-4p14 [FEMALE ONLY]
             if (this.gwas['rs13135637-4p14']['allele']['one'] == 'r') {
                 if (this.gwas['rs13135637-4p14']['allele']['two'] == 'r') {
                     if (Math.random() <= CONFIG.sociological_chance) {
@@ -245,7 +243,7 @@ export class Person {
         }
     }
 
-    lawOfSeggregation(gene_1: Gene, gene_2: Gene) {
+    lawOfSeggregation(gene_1: Gene, gene_2: Gene): Gene {
         // [ ][R] [R]
         // [R][RR][RR]
         // [R][RR][RR]
@@ -269,7 +267,7 @@ export class Person {
         // [r][Rr][Rr]
         if (gene_1['one'] == 'R' && gene_1['two'] == 'R') {  //Row
             if (gene_2['one'] == 'R' && gene_2['two'] == 'r') { //Column
-                let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
+                const random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
                 if (random_chance == 0) {
                     return { 'one': 'R', 'two': 'R' }
                 }
@@ -284,7 +282,7 @@ export class Person {
         // [R][RR][RR]
         if (gene_1['one'] == 'R' && gene_1['two'] == 'R') {  //Row
             if (gene_2['one'] == 'r' && gene_2['two'] == 'R') { //Column
-                let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
+                const random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
                 if (random_chance == 0) {
                     return { 'one': 'R', 'two': 'R' }
                 }
@@ -299,7 +297,7 @@ export class Person {
         // [R][RR][RR]
         if (gene_1['one'] == 'R' && gene_1['two'] == 'r') {  //Row
             if (gene_2['one'] == 'R' && gene_2['two'] == 'R') {  //Column
-                let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
+                const random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
                 if (random_chance == 0) {
                     return { 'one': 'R', 'two': 'R' }
                 }
@@ -314,7 +312,7 @@ export class Person {
         // [R][Rr][RR]
         if (gene_1['one'] == 'r' && gene_1['two'] == 'R') { //Row
             if (gene_2['one'] == 'R' && gene_2['two'] == 'R') {  //Column
-                let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
+                const random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
                 if (random_chance == 0) {
                     return { 'one': 'R', 'two': 'R' }
                 }
@@ -329,7 +327,7 @@ export class Person {
         // [r][Rr][rr]
         if (gene_1['one'] == 'R' && gene_1['two'] == 'r') {  //Row
             if (gene_2['one'] == 'R' && gene_2['two'] == 'r') {  //Column
-                let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
+                const random_chance = Math.floor(Math.random() * (4 - 0)) + 0;
                 if (random_chance == 0) {
                     return { 'one': 'R', 'two': 'R' }
                 }
@@ -347,7 +345,7 @@ export class Person {
         // [r][Rr][rr]
         if (gene_1['one'] == 'r' && gene_1['two'] == 'R') {  //Row
             if (gene_2['one'] == 'R' && gene_2['two'] == 'r') {  //Column
-                let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
+                const random_chance = Math.floor(Math.random() * (4 - 0)) + 0;
                 if (random_chance == 0) {
                     return { 'one': 'R', 'two': 'R' }
                 }
@@ -365,7 +363,7 @@ export class Person {
         // [R][Rr][Rr]
         if (gene_1['one'] == 'R' && gene_1['two'] == 'r') {  //Row
             if (gene_2['one'] == 'r' && gene_2['two'] == 'R') {  //Column
-                let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
+                const random_chance = Math.floor(Math.random() * (4 - 0)) + 0;
                 if (random_chance == 0) {
                     return { 'one': 'R', 'two': 'R' }
                 }
@@ -383,7 +381,7 @@ export class Person {
         // [R][Rr][Rr]
         if (gene_1['one'] == 'r' && gene_1['two'] == 'R') {  //Row
             if (gene_2['one'] == 'r' && gene_2['two'] == 'R') {  //Column
-                let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
+                const random_chance = Math.floor(Math.random() * (4 - 0)) + 0;
                 if (random_chance == 0) {
                     return { 'one': 'R', 'two': 'R' }
                 }
@@ -419,7 +417,7 @@ export class Person {
         // [r][Rr][Rr]
         if (gene_1['one'] == 'R' && gene_1['two'] == 'r') {  //Row
             if (gene_2['one'] == 'r' && gene_2['two'] == 'r') {  //Column
-                let random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
+                const random_chance = Math.floor(Math.random() * (2 - 0)) + 0;
                 if (random_chance == 0) {
                     return { 'one': 'R', 'two': 'r' }
                 }
@@ -477,20 +475,20 @@ export class Person {
         return this.randomAllele();
     }
 
-    randomAlleleHeterosexual() {
-        let alleles = [{
+    randomAlleleHeterosexual(): Gene {
+        const alleles: Gene[] = [{
             'one': 'R',
             'two': 'R'
         }, {
             'one': 'R',
             'two': 'r'
         }];
-        let num = Math.floor(Math.random() * (2 - 0) + 0);
+        const num = Math.floor(Math.random() * (2 - 0) + 0);
         return alleles[num];
     }
 
-    randomAllele() {
-        let alleles = [{
+    randomAllele(): Gene {
+        const alleles: Gene[] = [{
             'one': 'R',
             'two': 'R'
         }, {
@@ -500,8 +498,7 @@ export class Person {
             'one': 'r',
             'two': 'r'
         }];
-        let num = Math.floor(Math.random() * (3 - 0) + 0);
+        const num = Math.floor(Math.random() * (3 - 0) + 0);
         return alleles[num];
     }
-    
 }

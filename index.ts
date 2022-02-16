@@ -45,27 +45,30 @@ function randomEvent(): boolean {
 function mate(parent_1?: Person, parent_2?: Person): boolean {
     // Homosexual couple
     if (parent_1 && parent_2) {
+        // OR because of a bisexual relationship
         if (parent_1.homosexual == true || parent_2.homosexual == true) {
             random_event_counter += 1;
             if (randomEvent() == true) {
                 random_event_offspring_counter += 1;
+                // Require a donor for same sex
                 if (parent_1.gender == parent_2.gender) {
                     let donor = getDonor(parent_1);
                     if (donor != false) {
                         newHuman(parent_1,parent_2);
                         return true;
                     }
+                // Proceed for heterosex bisexual
                 } else if (parent_1.gender != parent_2.gender) {
                     newHuman(parent_1,parent_2);
                     return true;
                 }
             }
-        } else {
+        } else if (parent_1.homosexual == false && parent_2.homosexual == false) {
             newHuman(parent_1, parent_2);
             return true;
         }
         function newHuman(parent_1: Person, parent_2: Person) {
-            let new_human = new Person(parent_1, parent_2);
+            let new_human = new Person(parent_1, parent_2, undefined, undefined, undefined, generation);
             offspring_counter += 1;
             humans.push(new_human);
             if (new_human.homosexual == true) {
@@ -140,24 +143,22 @@ function setChildPerGeneration(): { offspring: number, percent: number } {
     }
 }
 
-function write(): boolean {
+function write(): void {
     let text = generation + ',' + offspring + ',' + offspring_counter + ',' + random_events_expected + ',' + random_event_counter + ',' + random_event_offspring_counter + ',' + homosexual_counter + ',' + homosexual_percent +  ',' + alive_person_counter + ',' + humans.length + '\n';
     appendFileSync('results.txt', text);
-    return true;
 }
 
-function initText(): boolean {
+function initText(): void {
     writeFileSync('results.txt', JSON.stringify(CONFIG) + '\n');
     appendFileSync('results.txt', 'Generation,Expected Offspring,Total Offspring,Random Events Expected,Random Events Triggered,Random Event Offspring (Homosexual Parent) [IVF/Surrogacy/Bi-Sexual],Alive Homosexuals,Homosexuals as percent of population,Alive Population,Total Population (Alive + Dead)\n');
     let text = 0 + ',' + 0 + ',' + 0 + ',' + 0 + ',' + 0 + ',' + 0 + ',' + (humans.length * CONFIG.starting_lgbt_percent) + ',' + homosexual_percent + ',' + humans.length + ',' + humans.length + '\n';
     appendFileSync('results.txt', text);
-    return true;
 }
 
-function initPopulation(): boolean {
+function initPopulation(): void {
     // Create homosexuals
     for (let i = 0; i < (CONFIG.starting_population * CONFIG.starting_lgbt_percent); i++) {
-        let donor_random: boolean = (Math.floor(Math.random() * (2 - 0)) + 0) == 1 ? true : false;
+        let donor_random: boolean = (Math.random() <= 0.5);
         let age: number = Math.floor(Math.random() * (50 - 1) + 1);
         let new_human: Person = new Person(undefined, undefined, age, true, donor_random);
         humans.push(new_human);
@@ -165,15 +166,14 @@ function initPopulation(): boolean {
 
     // Create heterosexuals
     while (humans.length < CONFIG.starting_population) {
-        let donor_random: boolean = (Math.floor(Math.random() * (2 - 0)) + 0) == 1 ? true : false;
+        let donor_random: boolean = (Math.random() <= 0.5);
         let age: number = Math.floor(Math.random() * (50 - 1) + 1);
         let new_human = new Person(undefined, undefined, age, false, donor_random);
         humans.push(new_human);
     }
-    return true;
 }
 
-function main() {
+function main(): void {
     initPopulation();
     initText();
     while (checkExtinct(false) == false || run_off_counter < CONFIG.run_off) {
