@@ -14,7 +14,7 @@ export class Person {
     private age: number;
     private donor: boolean;
     private gender: string;
-    private gwas: {
+    protected gwas: {
         // [ALL]
         'rs11114975-12q21.31': {
             'allele': Gene
@@ -499,6 +499,10 @@ export class Person {
         }];
         const num = Math.floor(Math.random() * (3 - 0) + 0);
         return alleles[num];
+    }
+
+    public setAge(age: number): void {
+        this.age = age;
     }
 
     public setDeadStatus(dead: boolean): void {
