@@ -153,11 +153,19 @@ export class Person {
                     };
                 }
             } else {
-                this.gwas['rs11114975-12q21.31']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
-                this.gwas['rs10261857-7q31.2']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
-                this.gwas['rs28371400-15q21.3']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
-                this.gwas['rs34730029-11q12.1']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
-                this.gwas['rs13135637-4p14']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
+                if (CONFIG.init_random_sexuality) {
+                    this.gwas['rs11114975-12q21.31']['allele'] = this.lawOfSeggregation(this.randomAllele(), this.randomAllele());
+                    this.gwas['rs10261857-7q31.2']['allele'] = this.lawOfSeggregation(this.randomAllele(), this.randomAllele());
+                    this.gwas['rs28371400-15q21.3']['allele'] = this.lawOfSeggregation(this.randomAllele(), this.randomAllele());
+                    this.gwas['rs34730029-11q12.1']['allele'] = this.lawOfSeggregation(this.randomAllele(), this.randomAllele());
+                    this.gwas['rs13135637-4p14']['allele'] = this.lawOfSeggregation(this.randomAllele(), this.randomAllele());   
+                } else {
+                    this.gwas['rs11114975-12q21.31']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
+                    this.gwas['rs10261857-7q31.2']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
+                    this.gwas['rs28371400-15q21.3']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
+                    this.gwas['rs34730029-11q12.1']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());
+                    this.gwas['rs13135637-4p14']['allele'] = this.lawOfSeggregation(this.randomAlleleHeterosexual(), this.randomAlleleHeterosexual());                    
+                }
             }
         }
     }
@@ -514,7 +522,21 @@ export class Person {
     }
 
     public getDonorStatus(): boolean {
-        return this.donor;
+        if (this.dead == false) {
+            if (this.age >= CONFIG.breed_range[0]) {
+                if (this.age <= CONFIG.breed_range[1]) {
+                    return this.donor;
+                }
+            }
+        }
+        return false;
+    }
+
+    public getDonorEligible(partner: Person): boolean {
+        if (this.gender == partner.gender) {
+            return false;
+        }
+        return this.getDonorStatus();
     }
 
     public getDeadStatus(): boolean {
@@ -528,5 +550,5 @@ export class Person {
     public getAge(): number {
         return this.age;
     }
-    
+
 }

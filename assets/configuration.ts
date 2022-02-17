@@ -1,5 +1,6 @@
 export default {
     "starting_population": 1_000,
+    "init_random_sexuality": true,
     "starting_lgbt_percent": 0,
     "offspring_percent": [0.0175, 0.013],
     "random_event_chance": 0,

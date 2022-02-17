@@ -22,14 +22,8 @@ let homosexual_breeders_extinct: boolean = true;
 function getDonor(parent_1: Person): Person | boolean {
     for (let i = humans.length - 1; i >= 0; i--) {
         let donor: Person = humans[i];
-        if (donor.getGender() != parent_1.getGender()) {
-            if (donor.getDeadStatus() != true) {
-                if (donor.getAge() >= CONFIG.breed_range[0]) {
-                    if (donor.getAge() <= CONFIG.breed_range[1]) {
-                        return donor;
-                    }
-                }
-            }
+        if (donor.getDonorEligible(parent_1)) {
+            return donor;
         }
     }
     return false;
@@ -43,6 +37,14 @@ function randomEvent(): boolean {
 }
 
 function mate(parent_1?: Person, parent_2?: Person): boolean {
+    function newHuman(parent_1: Person, parent_2: Person) {
+        let new_human = new Person(parent_1, parent_2, undefined, undefined, undefined, generation);
+        offspring_counter += 1;
+        humans.push(new_human);
+        if (new_human.getHomosexualStatus() == true) {
+            homosexual_offspring_counter += 1;
+        }
+    }
     // Homosexual couple
     if (parent_1 && parent_2) {
         // OR because of a bisexual relationship
@@ -66,14 +68,6 @@ function mate(parent_1?: Person, parent_2?: Person): boolean {
         } else if (parent_1.getHomosexualStatus() == false && parent_2.getHomosexualStatus() == false) {
             newHuman(parent_1, parent_2);
             return true;
-        }
-        function newHuman(parent_1: Person, parent_2: Person) {
-            let new_human = new Person(parent_1, parent_2, undefined, undefined, undefined, generation);
-            offspring_counter += 1;
-            humans.push(new_human);
-            if (new_human.getHomosexualStatus() == true) {
-                homosexual_offspring_counter += 1;
-            }
         }
     }
     return false;
