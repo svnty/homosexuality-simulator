@@ -1,0 +1,14 @@
+pub static STARTING_POPULATION: u16 = 10000;
+// pub static INIT_ALL_HETEROSEXUALS: bool = false;
+// pub static STARTING_LGBT_PERCENT: f32 = 0.0;
+pub static OFFSPRING_PERCENT: [f32; 2] = [0.0175, 0.013];
+pub static RANDOM_EVENT_CHANCE: f32 = 0.0;
+// pub static FORCE_HOMOSEXUAL_RANDOM_EVENT_DURING_GENERATION: bool = false;
+pub static DEATH_RANGE: [u8; 2] = [90, 70];
+pub static BREED_RANGE: [u8; 2] = [20, 50];
+// pub static SOCIOLOGICAL_TOGGLE: bool = false;
+// pub static SOCIOLOGICAL_CHANCE: f32 = 0.0;
+// pub static HOMOSEXUAL_ONLY_CHANCE: bool = false; //? VARIABLE NAME ??
+// pub static HOMOSEXUAL_ONLY_CHANCE_PERCENT: f32 = 0.0; // ? VARIABLE NAME ??
+pub static RUN_OFF_GENERATIONS: u16 = 500;
+pub static MAX_POPULATION: u64 = 10_000_000_000;
