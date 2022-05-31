@@ -198,12 +198,16 @@ impl Person {
     return &self._genome;
   }
 
-  pub fn get_birth_year(&self) -> u32 {
-    return self._birth_year;
-  }
-
   pub fn get_homosexual(&self) -> bool {
-    return self._homosexual.unwrap();
+    match self._homosexual {
+      Some(homosexual) => {
+        if homosexual {
+          return true
+        }
+        return false
+      },
+      None => return false
+    }
   }
 
   pub fn get_age(&self) -> u8 {

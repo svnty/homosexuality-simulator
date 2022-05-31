@@ -57,14 +57,12 @@ fn main() {
   generation_offspring_expected: {},
   total_person_coutner: {},
   alive_homosexuals: {},
-  alive_person_counter: {},
   human_vectors_len: {}
 }}", 
       generation, 
       alive_person_counter, 
       generation_offspring_expected, 
       total_person_counter, 
-      alive_person_counter,
       alive_homosexual_counter, 
       humans_vector.len()
     );
@@ -111,27 +109,64 @@ fn main() {
     generation_offspring_homosexual: &mut u64
   ) -> Option<person::Person> {
 
-    fn create_new_human(parent_1: &person::Person, parent_2: &person::Person, generation: &u32, generation_offspring_counter: &mut u64, generation_offspring_homosexual: &mut u64) -> Option<person::Person> {
+    fn create_new_human(
+      parent_1: &person::Person, 
+      parent_2: &person::Person, 
+      generation: &u32, 
+      generation_offspring_counter: &mut u64, 
+      generation_offspring_homosexual: &mut u64
+    ) -> Option<person::Person> {
       *generation_offspring_counter = *generation_offspring_counter + 1;
       let new_human = person::Person::new(&parent_1, &parent_2, *generation);
       if new_human.get_homosexual() {
         *generation_offspring_homosexual = *generation_offspring_homosexual + 1;
       }
-      return Some(new_human );
+      return Some(new_human);
     }
 
-    fn create_new_human_with_donor(parent_1: &person::Person, humans_vector: &Vec<person::Person>, generation: &u32, generation_offspring_counter: &mut u64, generation_offspring_homosexual: &mut u64) -> Option<person::Person> {
-      fn get_donor(parent_1: &person::Person, humans_vector: &Vec<person::Person>, generation: &u32, generation_offspring_counter: &mut u64, generation_offspring_homosexual: &mut u64) -> Option<person::Person> {
+    fn create_new_human_with_donor(
+      parent_1: &person::Person, 
+      humans_vector: &Vec<person::Person>, 
+      generation: &u32, 
+      generation_offspring_counter: &mut u64, 
+      generation_offspring_homosexual: &mut u64
+    ) -> Option<person::Person> {
+      fn get_donor(
+        parent_1: &person::Person, 
+        humans_vector: &Vec<person::Person>, 
+        generation: &u32, 
+        generation_offspring_counter: &mut u64, 
+        generation_offspring_homosexual: &mut u64
+      ) -> Option<person::Person> {
         for person in humans_vector.iter().rev() {
           #[allow(unused_parens)]
           if (person.check_donor_eligible(&parent_1) == true) {
-            return create_new_human(&parent_1, &person, &generation, generation_offspring_counter, generation_offspring_homosexual);
+            return create_new_human(
+              &parent_1, 
+              &person, 
+              &generation, 
+              generation_offspring_counter, 
+              generation_offspring_homosexual
+            );
           }
         }
         return None;
       }
-      match get_donor(&parent_1, &humans_vector, &generation, generation_offspring_counter, generation_offspring_homosexual) {
-        Some(donor) => return create_new_human(&parent_1, &donor, &generation, generation_offspring_counter, generation_offspring_homosexual),
+
+      match get_donor(
+        &parent_1, 
+        &humans_vector, 
+        &generation, 
+        generation_offspring_counter, 
+        generation_offspring_homosexual
+      ) {
+        Some(donor) => return create_new_human(
+          &parent_1, 
+          &donor, 
+          &generation, 
+          generation_offspring_counter, 
+          generation_offspring_homosexual
+        ),
         None => return None
       }
     }
@@ -150,27 +185,57 @@ fn main() {
           gender::Gender::M => {
             match parent_2.get_gender() {
               gender::Gender::M => {
-                return create_new_human_with_donor(&parent_1, &humans_vector, &generation, generation_offspring_counter, generation_offspring_homosexual);
+                return create_new_human_with_donor(
+                  &parent_1, 
+                  &humans_vector, 
+                  &generation, 
+                  generation_offspring_counter, 
+                  generation_offspring_homosexual
+                );
               },
               _ => {
-                return create_new_human(&parent_1, &parent_2, &generation, generation_offspring_counter, generation_offspring_homosexual);
+                return create_new_human(
+                  &parent_1, 
+                  &parent_2, 
+                  &generation, 
+                  generation_offspring_counter, 
+                  generation_offspring_homosexual
+                );
               }
             }
           },
           gender::Gender::F => {
             match parent_2.get_gender() {
               gender::Gender::F => {
-                return create_new_human_with_donor(&parent_1, &humans_vector, &generation, generation_offspring_counter, generation_offspring_homosexual);
+                return create_new_human_with_donor(
+                  &parent_1, 
+                  &humans_vector,
+                  &generation, 
+                  generation_offspring_counter, 
+                  generation_offspring_homosexual
+                );
               },
               _ => {
-                return create_new_human(&parent_1, &parent_2, &generation, generation_offspring_counter, generation_offspring_homosexual);
+                return create_new_human(
+                  &parent_1, 
+                  &parent_2, 
+                  &generation, 
+                  generation_offspring_counter,
+                  generation_offspring_homosexual
+                );
               }
             }
           }
         }
       }
     } else {
-      return create_new_human(&parent_1, &parent_2, &generation, generation_offspring_counter, generation_offspring_homosexual);
+      return create_new_human(
+        &parent_1, 
+        &parent_2, 
+        &generation, 
+        generation_offspring_counter, 
+        generation_offspring_homosexual
+      );
     }
     return None;
   }
