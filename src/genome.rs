@@ -1,7 +1,6 @@
 use super::gene;
 use super::person;
 
-#[derive(Copy, Clone)]
 pub struct Genome {
   // GENDER [ALL]
   _rs11114975_12q21_31: gene::Gene,

@@ -7,20 +7,25 @@ mod gene;
 mod allele;
 
 use rand::Rng;
-use std::fs::File;
 use std::io::Write;
+use std::fs::OpenOptions;
+
+static DEBUG: bool = false;
+static STATUS: bool = false;
 
 fn main() {
   // HOUSEKEEPING
-  let mut generation: u32 = 0;
+  let mut generation: u64 = 0;
   let mut humans_vector: Vec<person::Person> = Vec::new();
   let mut total_person_counter: u64 = 0;
   let mut alive_person_counter: u64 = 0;
   let mut alive_homosexual_counter: u64 = 0;
+  let mut dead_person_counter: u64 = 0;
   // OFFSPRING
   let mut generation_offspring_expected: u64 = 0;
   let mut generation_offspring_counter: u64 = 0;
   let mut generation_offspring_homosexual: u64 = 0;
+  let mut generation_offspring_random_event: u64 = 0;
   // Counterdown starts once breeders are extinct
   let mut run_off_counter: u16 = 0;
   let mut are_homosexual_breeders_extinct: bool = false;
@@ -36,111 +41,151 @@ fn main() {
       &mut alive_person_counter, 
       &mut alive_homosexual_counter, 
       &mut run_off_counter, 
-      &mut are_homosexual_breeders_extinct
+      &mut are_homosexual_breeders_extinct,
+      &mut dead_person_counter
   ) || run_off_counter < config::RUN_OFF_GENERATIONS) {
+    if DEBUG {
+      println!("Starting generation");
+    }
     // Set variables
     generation = generation + 1;
     generation_offspring_expected = set_children_in_generation(&alive_person_counter);
     generation_offspring_counter = 0;
     generation_offspring_homosexual = 0;
+    generation_offspring_random_event = 0;
     
     // Break if population 10 billion
-    if (alive_person_counter >= config::MAX_POPULATION) {
+    if alive_person_counter >= config::MAX_POPULATION {
       break;
     }
 
-    // debug
-    println!(
-"{{
-  generation: {},
-  alive_person_counter: {},
-  generation_offspring_expected: {},
-  total_person_coutner: {},
-  alive_homosexuals: {},
-  human_vectors_len: {}
-}}", 
-      generation, 
-      alive_person_counter, 
-      generation_offspring_expected, 
-      total_person_counter, 
-      alive_homosexual_counter, 
-      humans_vector.len()
-    );
-
+    if STATUS {
+      println!(
+      "{{
+        generation: {},
+        alive_person_counter: {},
+        total_person_counter: {},
+        dead_person_counter: {},
+        generation_offspring_expected: {},
+        alive_homosexual_counter: {},
+        human_vectors_len: {}
+      }}", 
+        generation, 
+        alive_person_counter, 
+        total_person_counter, 
+        dead_person_counter, 
+        generation_offspring_expected, 
+        alive_homosexual_counter, 
+        humans_vector.len()
+      );
+    }
+    
     // Start mate
-    let mut parent_1 = person::Person::dummy();
-    let mut parent_2 = person::Person::dummy();
+    let mut reverse_walker = humans_vector.len();
+    let mut new_vec: Vec<person::Person> = Vec::new();
+    let mut new_human: Option<person::Person>;
 
     while generation_offspring_counter < generation_offspring_expected {
-      let mut reverse_walker = humans_vector.len() - 1;
+      let mut parent_1 = &person::Person::dummy();
+      let mut parent_2 = &person::Person::dummy();
+
+      if DEBUG {
+        println!("while generation_offspring_counter < generation_offspring_expected");
+      }
       while check_parents_can_mate(&parent_1, &parent_2) != true {
-        let index = rand::thread_rng().gen_range(0..(humans_vector.len()-1) as usize);
-        parent_1 = *humans_vector.get(index).unwrap();
-        parent_2 = *humans_vector.get(reverse_walker).unwrap();
+        if DEBUG {
+          println!("while checkparents_can_mate()");
+        }
         reverse_walker = reverse_walker - 1;
-        if (reverse_walker == 0) {
-          reverse_walker = humans_vector.len() - 1;
+        let index = rand::thread_rng().gen_range(0..(humans_vector.len()-1) as usize);
+        if reverse_walker <= 1 {
+          reverse_walker = humans_vector.len();
+          if DEBUG {
+            println!("reverse walker: {}", reverse_walker);
+          }
+        }
+        
+        match humans_vector.get(index) {
+          Some(parent) => { parent_1 = parent },
+          None => ()
+        }
+        match humans_vector.get(reverse_walker) {
+          Some(parent) => { parent_2 = parent },
+          None => ()
         }
       }
-      let new_human = mate(
+
+      new_human = mate(
         &parent_1, 
         &parent_2, 
         &humans_vector,
         &generation, 
         &mut generation_offspring_counter,
-        &mut generation_offspring_homosexual
+        &mut generation_offspring_homosexual,
+        &mut generation_offspring_random_event
       );
 
       match new_human {
         Some(person) => {
-          humans_vector.push(person);
+          new_vec.push(person);
         }
-        None => ()
+        None => { 
+          if DEBUG {
+            println!("no human returned");
+          }
+        }
       }
     }
+
+    humans_vector.append(&mut new_vec);
+    if DEBUG {
+      println!("humans_vector.append(new_vec)");
+    }
+    write_generation(
+      &generation,
+      &generation_offspring_counter, 
+      &generation_offspring_homosexual, 
+      &generation_offspring_random_event, 
+      &alive_homosexual_counter, 
+      &total_person_counter
+    );
   }
 
-  fn mate(
-    parent_1: &person::Person, 
-    parent_2: &person::Person,
-    humans_vector: &Vec<person::Person>,
-    generation: &u32, 
-    generation_offspring_counter: &mut u64,
-    generation_offspring_homosexual: &mut u64
-  ) -> Option<person::Person> {
+  fn mate(parent_1: &person::Person, parent_2: &person::Person, humans_vector: &Vec<person::Person>, generation: &u64, generation_offspring_counter: &mut u64, generation_offspring_homosexual: &mut u64, generation_offspring_random_event: &mut u64) -> Option<person::Person> {
+    if DEBUG {
+      println!("init mate()");
+    }
+    let mut return_value: Option<person::Person> = None;
 
-    fn create_new_human(
-      parent_1: &person::Person, 
-      parent_2: &person::Person, 
-      generation: &u32, 
-      generation_offspring_counter: &mut u64, 
-      generation_offspring_homosexual: &mut u64
-    ) -> Option<person::Person> {
+    fn create_new_human(parent_1: &person::Person, parent_2: &person::Person, generation: &u64, generation_offspring_counter: &mut u64, generation_offspring_homosexual: &mut u64) -> Option<person::Person> {
+      if DEBUG {
+        println!("init create_new_human()");
+      }
       *generation_offspring_counter = *generation_offspring_counter + 1;
       let new_human = person::Person::new(&parent_1, &parent_2, *generation);
       if new_human.get_homosexual() {
         *generation_offspring_homosexual = *generation_offspring_homosexual + 1;
       }
+      if DEBUG {
+        println!("return create_new_human()");
+      }
       return Some(new_human);
     }
 
-    fn create_new_human_with_donor(
-      parent_1: &person::Person, 
-      humans_vector: &Vec<person::Person>, 
-      generation: &u32, 
-      generation_offspring_counter: &mut u64, 
-      generation_offspring_homosexual: &mut u64
-    ) -> Option<person::Person> {
-      fn get_donor(
-        parent_1: &person::Person, 
-        humans_vector: &Vec<person::Person>, 
-        generation: &u32, 
-        generation_offspring_counter: &mut u64, 
-        generation_offspring_homosexual: &mut u64
-      ) -> Option<person::Person> {
+    fn create_new_human_with_donor(parent_1: &person::Person, humans_vector: &Vec<person::Person>, generation: &u64, generation_offspring_counter: &mut u64, generation_offspring_homosexual: &mut u64) -> Option<person::Person> {
+      if DEBUG {
+        println!("init create_new_human_with_donor()");
+      }
+      fn get_donor(parent_1: &person::Person, humans_vector: &Vec<person::Person>, generation: &u64, generation_offspring_counter: &mut u64, generation_offspring_homosexual: &mut u64) -> Option<person::Person> {
+        if DEBUG {
+          println!("init get_donor()");
+        }
         for person in humans_vector.iter().rev() {
           #[allow(unused_parens)]
           if (person.check_donor_eligible(&parent_1) == true) {
+            if DEBUG {
+              println!("return get_donor() Some");
+            }
             return create_new_human(
               &parent_1, 
               &person, 
@@ -150,42 +195,58 @@ fn main() {
             );
           }
         }
+        if DEBUG {
+          println!("return get_donor() None");
+        }
         return None;
       }
 
-      match get_donor(
-        &parent_1, 
-        &humans_vector, 
-        &generation, 
-        generation_offspring_counter, 
-        generation_offspring_homosexual
-      ) {
-        Some(donor) => return create_new_human(
-          &parent_1, 
-          &donor, 
-          &generation, 
-          generation_offspring_counter, 
-          generation_offspring_homosexual
-        ),
-        None => return None
+      match get_donor(&parent_1, &humans_vector, &generation, generation_offspring_counter, generation_offspring_homosexual) {
+        Some(donor) => {
+          if DEBUG {
+            println!("return create_new_human_with_donor() some");
+          }
+          return create_new_human(&parent_1, &donor, &generation, generation_offspring_counter, generation_offspring_homosexual);
+        },
+        _ => {
+          if DEBUG {
+            println!("return create_new_human_with_donor() none");
+          }
+          return None
+        }
       }
     }
 
     fn random_event() -> bool {
-      #[allow(unused_parens)]
-      if (rand::thread_rng().gen::<f32>() <= config::RANDOM_EVENT_CHANCE) {
-        return true;
+      if DEBUG {
+        println!("init random_event()");
       }
-      return false;
+      let mut return_value: bool = false;
+      if rand::thread_rng().gen::<f32>() <= config::RANDOM_EVENT_CHANCE {
+        return_value = true;
+      }
+      if DEBUG {
+        println!("return random_event() {}", return_value);
+      }
+      return return_value;
     }
 
     if parent_1.get_homosexual() || parent_2.get_homosexual() {
-      if random_event() {
+      if DEBUG {
+        println!("parent_1: {}", parent_1);
+        println!("parent_2: {}", parent_2);
+        println!("parent.get_homosexual() true");
+      }
+      if config::RANDOM_EVENT_CHANCE > 0.0 && random_event() {
         match parent_1.get_gender() {
           gender::Gender::M => {
             match parent_2.get_gender() {
               gender::Gender::M => {
-                return create_new_human_with_donor(
+                // Homosexual
+                if DEBUG {
+                  println!("mate() random[M:M] create_new_human_with_donor()");
+                }
+                return_value = create_new_human_with_donor(
                   &parent_1, 
                   &humans_vector, 
                   &generation, 
@@ -193,8 +254,12 @@ fn main() {
                   generation_offspring_homosexual
                 );
               },
-              _ => {
-                return create_new_human(
+              gender::Gender::F => {
+                // Bisexual
+                if DEBUG {
+                  println!("mate() random[M:F] create_new_human()");
+                }
+                return_value = create_new_human(
                   &parent_1, 
                   &parent_2, 
                   &generation, 
@@ -203,24 +268,32 @@ fn main() {
                 );
               }
             }
-          },
+          },  
           gender::Gender::F => {
             match parent_2.get_gender() {
               gender::Gender::F => {
-                return create_new_human_with_donor(
+                // Homosexual
+                if DEBUG {
+                  println!("mate() random[F:F] create_new_human_with_donor()");
+                }
+                return_value = create_new_human_with_donor(
                   &parent_1, 
-                  &humans_vector,
+                  &humans_vector, 
                   &generation, 
                   generation_offspring_counter, 
                   generation_offspring_homosexual
                 );
               },
-              _ => {
-                return create_new_human(
+              gender::Gender::M => {
+                // Bisexual
+                if DEBUG {
+                  println!("mate() random[F:M] create_new_human()");
+                }
+                return_value = create_new_human(
                   &parent_1, 
                   &parent_2, 
                   &generation, 
-                  generation_offspring_counter,
+                  generation_offspring_counter, 
                   generation_offspring_homosexual
                 );
               }
@@ -228,8 +301,11 @@ fn main() {
           }
         }
       }
-    } else {
-      return create_new_human(
+    } else if parent_1.get_homosexual() != true && parent_2.get_homosexual() != true {
+      if DEBUG {
+        println!("mate() normal create_new_human()");
+      }
+      return_value = create_new_human(
         &parent_1, 
         &parent_2, 
         &generation, 
@@ -237,24 +313,40 @@ fn main() {
         generation_offspring_homosexual
       );
     }
-    return None;
+    if DEBUG {
+      println!("return mate()");
+    }
+    return return_value;
   }
 
   fn check_parents_can_mate(parent_1: &person::Person, parent_2: &person::Person) -> bool {
+    if DEBUG {
+      println!("init check_parents_can_mate()");
+    }
+    let mut return_value: bool = false;
     if parent_1.get_can_breed() {
       if parent_2.get_can_breed() {
-        return true;
+        return_value = true;
       }
     }
-    return false;
+    if DEBUG {
+      println!("return check_parents_can_mate() {}", return_value);
+    }
+    return return_value;
   }
 
   fn set_children_in_generation(alive_person_counter: &u64) -> u64 {
+    if DEBUG {
+      println!("init set_children_in_generation()");
+    }
     let upper_percent = config::OFFSPRING_PERCENT[0];
     let upper_num = *alive_person_counter as f64 * upper_percent as f64;
     let lower_percent = config::OFFSPRING_PERCENT[1];
     let lower_num = *alive_person_counter as f64 * lower_percent as f64;
     let offspring_total: f64 = rand::thread_rng().gen_range(lower_num..upper_num);
+    if DEBUG {
+      println!("return set_children_in_generation()");
+    }
     return offspring_total as u64 + 1;
   }
 
@@ -266,26 +358,31 @@ fn main() {
   }
 
   fn init_text() {
-    let mut ofile = File::create("result.txt").expect("unable to create file");
-    let output = "Generation,Expected Offspring,Total Offspring,Homosexual Offspring,Random Events Expected,Random Events Triggered,Random Event Offspring (Homosexual Parent) [IVF/Surrogacy/Bi-Sexual],Alive Homosexuals,Homosexuals as percent of population,Alive Population,Total Population (Alive + Dead)";
+    let mut ofile = OpenOptions::new().write(true).create(true).truncate(true).open("result.txt").unwrap();
+    let output = "Generation,Generation Offspring,Homosexual Offspring,Random Event Offspring (Homosexual Parent) [IVF/Surrogacy/Bi-Sexual],Alive Homosexuals,Homosexuals %,Alive Population,Total Population (Alive + Dead)\n";
     ofile.write_all(output.as_bytes()).expect("unable to write");
   }
 
-  fn check_homosexuals_extinct(
-    humans_vector: &mut Vec<person::Person>,
-    total_person_counter: &mut u64,
-    alive_person_counter: &mut u64,
-    alive_homosexual_counter: &mut u64, 
-    run_off_counter: &mut u16,
-    are_homosexual_breeders_extinct: &mut bool
-  ) -> bool {
+  fn write_generation(generation: &u64, generation_offspring_counter: &u64, generation_offspring_homosexual: &u64, generation_offspring_random_event: &u64, alive_homosexual_counter: &u64, total_person_counter: &u64) {
+    let mut ofile = OpenOptions::new().write(true).append(true).create(false).truncate(false).open("result.txt").unwrap();
+    let homosexual_percent: f64 = (*alive_homosexual_counter as f64 / *total_person_counter as f64) * 100.0;
+    let output = generation.to_string() + "," + &generation_offspring_counter.to_string() + "," + &generation_offspring_homosexual.to_string() + "," + &generation_offspring_random_event.to_string() + "," + &alive_homosexual_counter.to_string() + "," + &homosexual_percent.to_string() + "," + &total_person_counter.to_string() + "\n";
+    ofile.write_all(output.as_bytes()).expect("unable to write");
+  }
+
+  fn check_homosexuals_extinct(humans_vector: &mut Vec<person::Person>, total_person_counter: &mut u64, alive_person_counter: &mut u64, alive_homosexual_counter: &mut u64, run_off_counter: &mut u16, are_homosexual_breeders_extinct: &mut bool, dead_person_counter: &mut u64) -> bool {
+    if DEBUG {
+      println!("init check_homosexuals_extinct()");
+    }
     *total_person_counter = 0;
     *alive_person_counter = 0;
+    *dead_person_counter = 0;
     *alive_homosexual_counter = 0;
     *are_homosexual_breeders_extinct = false;
 
     for person in humans_vector.iter_mut() {
       person.increment_age();
+      *total_person_counter = * total_person_counter + 1;
       if (person.get_dead() == false) {
         *alive_person_counter = *alive_person_counter + 1;
         if (person.get_homosexual() == true) {
@@ -294,10 +391,15 @@ fn main() {
             *are_homosexual_breeders_extinct = false;
           }
         }
+      } else {
+        *dead_person_counter = *dead_person_counter + 1;
       }
     }
     if (*are_homosexual_breeders_extinct == true) {
       *run_off_counter = *run_off_counter + 1;
+    }
+    if DEBUG {
+      println!("return check_homosexuals_extinct()");
     }
     return *are_homosexual_breeders_extinct;
   }

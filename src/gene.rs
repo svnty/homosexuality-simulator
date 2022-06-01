@@ -1,7 +1,6 @@
 use super::allele;
 use rand::Rng;
 
-#[derive(Copy, Clone)]
 pub struct Gene {
   _allele_1: allele::Allele,
   _allele_2: allele::Allele

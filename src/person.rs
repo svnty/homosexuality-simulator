@@ -3,16 +3,22 @@ use super::config;
 use super::gender;
 use super::genome;
 use rand::Rng;
+use std::fmt;
 
-#[derive(Copy, Clone)]
 pub struct Person {
   _age: u8,
-  _birth_year: u32,
+  _birth_year: u64,
   _gender: gender::Gender,
   _genome: genome::Genome,
   _homosexual: Option<bool>,
   _dead: bool,
   _donor: bool,
+}
+
+impl fmt::Display for Person {
+  fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+    return write!(f, "{{ Person: {{ age: {}, birth_year: {}, gender: {}, homosexual: {}, dead: {}, donor: {} }} }}", self._age, self._birth_year, self._gender, self._homosexual.unwrap(), self._dead, self._donor);
+  }
 }
 
 impl Person {
@@ -43,7 +49,7 @@ impl Person {
     return _self;
   }
 
-  pub fn new(parent_1: &Person, parent_2: &Person, year: u32) -> Self {
+  pub fn new(parent_1: &Person, parent_2: &Person, year: u64) -> Self {
     let mut _self = Self {
       _gender: gender::Gender::random(),
       _age: 0,
@@ -107,17 +113,17 @@ impl Person {
                                 match _rs34730029_11q12_1.get_allele_1() {
                                   allele::Allele::Dominant => {
                                     match _rs34730029_11q12_1.get_allele_2() {
-                                      allele::Allele::Dominant => true,
-                                      allele::Allele::Recessive => false,
+                                      allele::Allele::Dominant => return true,
+                                      allele::Allele::Recessive => return false,
                                     }
                                   }
-                                  allele::Allele::Recessive => false,
+                                  allele::Allele::Recessive => return  false,
                                 }
                               }
-                              allele::Allele::Recessive => false,
+                              allele::Allele::Recessive => return false,
                             }
                           }
-                          allele::Allele::Recessive => false,
+                          allele::Allele::Recessive => return false,
                         }
                       }
                       // GENDER F
@@ -125,24 +131,24 @@ impl Person {
                         let _rs13135637_4p14 = genome.get_rs13135637_4p14();
                         match _rs13135637_4p14.get_allele_1() {
                           allele::Allele::Dominant => match _rs13135637_4p14.get_allele_2() {
-                            allele::Allele::Dominant => true,
-                            allele::Allele::Recessive => false,
+                            allele::Allele::Dominant => return true,
+                            allele::Allele::Recessive => return false,
                           },
-                          allele::Allele::Recessive => false,
+                          allele::Allele::Recessive => return false,
                         }
                       }
                     }
                   }
-                  allele::Allele::Recessive => false,
+                  allele::Allele::Recessive => return false,
                 }
               }
-              allele::Allele::Recessive => false,
+              allele::Allele::Recessive => return false,
             }
           }
-          allele::Allele::Recessive => false,
+          allele::Allele::Recessive => return false,
         }
       }
-      allele::Allele::Recessive => false,
+      allele::Allele::Recessive => return false,
     }
   }
 
@@ -181,14 +187,13 @@ impl Person {
   }
 
   pub fn get_donor_status(&self) -> bool {
-    #[allow(unused_parens)]
-    if (self.get_dead() == true) {
+    if self.get_dead() == true {
       return false;
     }
-    if (self.get_in_breed_range() == false) {
+    if self.get_in_breed_range() == false {
       return false;
     }
-    if (self.get_donor() == false) {
+    if self.get_donor() == false {
       return false;
     }
     return true;
@@ -215,7 +220,7 @@ impl Person {
   }
 
   pub fn get_dead(&self) -> bool {
-    if (self._dead == true) {
+    if self._dead == true {
       return true;
     }
     return false;
