@@ -1,1 +1,1 @@
-sudo pkill rls cargo && cargon run --release
+sudo pkill rls cargo && cargo run --release

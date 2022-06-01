@@ -82,7 +82,6 @@ fn main() {
     
     // Start mate
     let mut reverse_walker = humans_vector.len();
-    let mut new_vec: Vec<person::Person> = Vec::new();
     let mut new_human: Option<person::Person>;
 
     while generation_offspring_counter < generation_offspring_expected {
@@ -105,15 +104,9 @@ fn main() {
             println!("reverse walker: {}", reverse_walker);
           }
         }
-        
-        match humans_vector.get(index) {
-          Some(parent) => { parent_1 = parent },
-          None => ()
-        }
-        match humans_vector.get(reverse_walker) {
-          Some(parent) => { parent_2 = parent },
-          None => ()
-        }
+
+        parent_1 = &humans_vector[index];
+        parent_2 = &humans_vector[reverse_walker];
       }
 
       new_human = mate(
@@ -126,9 +119,10 @@ fn main() {
         &mut generation_offspring_random_event
       );
 
+      // humans_vector.push(new_human.unwrap());
       match new_human {
         Some(person) => {
-          new_vec.push(person);
+          humans_vector.push(person);
         }
         None => { 
           if DEBUG {
@@ -138,7 +132,7 @@ fn main() {
       }
     }
 
-    humans_vector.append(&mut new_vec);
+    // humans_vector.append(&mut new_vec);
     if DEBUG {
       println!("humans_vector.append(new_vec)");
     }
