@@ -97,7 +97,8 @@ fn main() {
           println!("while checkparents_can_mate()");
         }
         reverse_walker = reverse_walker - 1;
-        let index = rand::thread_rng().gen_range(0..(humans_vector.len()-1) as usize);
+        let min_index: usize = total_person_counter as usize - alive_person_counter as usize;
+        let index = rand::thread_rng().gen_range(min_index..(humans_vector.len()-1));
         if reverse_walker <= 1 {
           reverse_walker = humans_vector.len();
           if DEBUG {
@@ -239,6 +240,7 @@ fn main() {
         println!("parent.get_homosexual() true");
       }
       if config::RANDOM_EVENT_CHANCE > 0.0 && random_event() {
+        *generation_offspring_random_event = *generation_offspring_random_event + 1;
         match parent_1.get_gender() {
           gender::Gender::M => {
             match parent_2.get_gender() {
@@ -384,11 +386,11 @@ fn main() {
     for person in humans_vector.iter_mut() {
       person.increment_age();
       *total_person_counter = * total_person_counter + 1;
-      if (person.get_dead() == false) {
+      if person.get_dead() == false {
         *alive_person_counter = *alive_person_counter + 1;
-        if (person.get_homosexual() == true) {
+        if person.get_homosexual() == true {
           *alive_homosexual_counter = *alive_homosexual_counter + 1;
-          if (person.get_in_breed_range() == true) {
+          if person.get_in_breed_range() == true {
             *are_homosexual_breeders_extinct = false;
           }
         }
@@ -396,7 +398,7 @@ fn main() {
         *dead_person_counter = *dead_person_counter + 1;
       }
     }
-    if (*are_homosexual_breeders_extinct == true) {
+    if *are_homosexual_breeders_extinct == true {
       *run_off_counter = *run_off_counter + 1;
     }
     if DEBUG {
