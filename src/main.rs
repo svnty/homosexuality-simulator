@@ -81,7 +81,7 @@ fn main() {
     }
     
     // Start mate
-    let mut reverse_walker = humans_vector.len();
+    // let mut reverse_walker = humans_vector.len();
     let mut new_human: Option<person::Person>;
 
     while generation_offspring_counter < generation_offspring_expected {
@@ -95,18 +95,19 @@ fn main() {
         if DEBUG {
           println!("while checkparents_can_mate()");
         }
-        reverse_walker = reverse_walker - 1;
+        // reverse_walker = reverse_walker - 1;
         let min_index: usize = total_person_counter as usize - alive_person_counter as usize;
         let index = rand::thread_rng().gen_range(min_index..(humans_vector.len()-1));
-        if reverse_walker <= 1 {
-          reverse_walker = humans_vector.len();
-          if DEBUG {
-            println!("reverse walker: {}", reverse_walker);
-          }
-        }
+        let index_new = rand::thread_rng().gen_range(min_index..(humans_vector.len()-1));
+        // if reverse_walker <= 1 {
+        //   reverse_walker = humans_vector.len();
+        //   if DEBUG {
+        //     println!("reverse walker: {}", reverse_walker);
+        //   }
+        // }
 
         parent_1 = &humans_vector[index];
-        parent_2 = &humans_vector[reverse_walker];
+        parent_2 = &humans_vector[index_new];
       }
 
       new_human = mate(
