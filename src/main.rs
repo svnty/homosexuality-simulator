@@ -147,6 +147,7 @@ fn main() {
       &generation_offspring_homosexual, 
       &generation_offspring_random_event, 
       &alive_homosexual_counter, 
+      &alive_person_counter,
       &total_person_counter
     );
   }
@@ -363,10 +364,10 @@ fn main() {
     ofile.write_all(output.as_bytes()).expect("unable to write");
   }
 
-  fn write_generation(generation: &u64, generation_offspring_counter: &u64, generation_offspring_homosexual: &u64, generation_offspring_random_event: &u64, alive_homosexual_counter: &u64, total_person_counter: &u64) {
+  fn write_generation(generation: &u64, generation_offspring_counter: &u64, generation_offspring_homosexual: &u64, generation_offspring_random_event: &u64, alive_homosexual_counter: &u64, alive_person_counter: &u64, total_person_counter: &u64) {
     let mut ofile = OpenOptions::new().write(true).append(true).create(false).truncate(false).open("result.txt").unwrap();
     let homosexual_percent: f64 = (*alive_homosexual_counter as f64 / *total_person_counter as f64) * 100.0;
-    let output = generation.to_string() + "," + &generation_offspring_counter.to_string() + "," + &generation_offspring_homosexual.to_string() + "," + &generation_offspring_random_event.to_string() + "," + &alive_homosexual_counter.to_string() + "," + &homosexual_percent.to_string() + "," + &total_person_counter.to_string() + "\n";
+    let output = generation.to_string() + "," + &generation_offspring_counter.to_string() + "," + &generation_offspring_homosexual.to_string() + "," + &generation_offspring_random_event.to_string() + "," + &alive_homosexual_counter.to_string() + "," + &homosexual_percent.to_string() + "," + &alive_person_counter.to_string() + "," + &total_person_counter.to_string() + "\n";
     ofile.write_all(output.as_bytes()).expect("unable to write");
   }
 
