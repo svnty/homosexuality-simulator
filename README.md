@@ -23,9 +23,22 @@ To be a homosexual, an individual had to be recessive in all genes respective fo
 
 To be a homosexual an individual had to be recessive in at least one gene associated with same-sex sexual behavior. Each R squared value was taken from the GWAS investigation conducted by A. Ganna et al, these R squared values were used as a threshold for a random number generator, if a gene was associated with same-sex sexual behavior with an R squared of 0.2, then any number randomly generated higher than 0.2 and the individual was considered to be homoesexual.
 
+### Scenario Three
+
+To be a homosexual an indivdual had to be recessive in at least one gene associated with same-sex behavior. The R squared values were taken from scenario two, this time the chance was calculated in series by multiplying the R squared of each gene that was recessive and using the result as the threshold for a random number generator. 
+
 ## Results
 
+### Scenario One
+
 ![1.3 Billion people, no chance of homosexual breeding](/img/1_3billion_percent.png?raw=true)
+
+### Scenario Two
+
+
+### Scenario Three
+
+
 
 ## Assets 
 [https://github.com/svnty/Homosexuality-Simulator](https://github.com/svnty/Homosexuality-Simulator)
