@@ -86,7 +86,7 @@ impl Person {
   fn determine_homosexual(&self) -> bool {
     let gender = self.get_gender();
     let genome = self.get_genome();
-    let series: f64 = 0.0;
+    let series: f64 = 1.0;
     // _rs11114975_12q21_31 [ALL_1]
     let _rs11114975_12q21_31 = genome.get_rs11114975_12q21_31();
     match _rs11114975_12q21_31.get_allele_1() {

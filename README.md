@@ -5,11 +5,11 @@
 
 ## Abstract
 
-Homosexuality was simulated as a genetic trait using custom software. Each year in the simulation a random percent of the population within a range would produce offspring, homosexuals would not breed and pass on their genes, the laws of seggregation was applied to the offspring using the parents genome. The simulator produced results indicating that if homosexuality was the condition of having recessive alleles for all genes involved in homosexuality the number of homosexuals averaged at around 0.08% of the population. This result implys there is a large sociological or psychological aspect to same-sex attraction. 
+Homosexuality was simulated as a genetic trait using custom software. Each year in the simulation a random percent of the population within a range would produce offspring, homosexuals would not breed and pass on their genes, the laws of seggregation was applied to the offspring using the parents genome. The simulator produced results indicating that if homosexuality was the condition of having recessive alleles for all genes involved in homosexuality the number of homosexuals averaged at around 0.08% ± 0.075% of the population. This result implys there is a large sociological or psychological aspect to same-sex attraction. 
 
 ## Introduction
 
-Five autosomal loci have been discovered as signifcantly associated with same-sex attraction (Ganna et al, 2019). Meaningful predictions of someones sexuality from genetic loci is not producable, indicating large individual variance and response to inherited traits, however same-sex sexual behavior can be observed to run in families and genetically identical twins. Yearly increasing homosexuality rates puts into the question the assertion that individuals are born exclusively attracted to the same sex and opens the discussion for the sociological and psychological influences on same-sex sexual behavior. Software was created to estimate the potential pool size for genetically and exclusively homosexual individuals, discussed further in the methods section.
+Five autosomal loci have been discovered as signifcantly associated with same-sex attraction (Ganna et al, 2019). Meaningful predictions of someones sexuality from genetic loci is not producable, indicating large individual variance and response to inherited traits, however same-sex sexual behavior can be observed to run in families and genetically identical twins. Yearly increasing homosexuality rates puts into the question the assertion that individuals are born exclusively attracted to the same sex and opens the discussion for the environmental influences on same-sex sexual behavior. The initial assumption was that a sub-set of the species that did not reproduce would be removed from the gene pool and eventually lead to extincton. Software was created to estimate the potential pool size for genetically and exclusively homosexual individuals, discussed further in the methods section.
 
 ## Methods
 
@@ -31,12 +31,15 @@ To be a homosexual an individual had to be recessive in at least one gene associ
 
 ### Scenario Two
 
+![]()
+
 ## Discussion
 
-The simulation takes into account no sociological or psychological contribution to same-sex attraction, the data from the results acts as a baseline for the potential number of genetically determined homosexuals within a population, assuming an individual who is heterozygous in all five active loci was a homosexual. Assumptions however, are intrinsically inaccurate and provides us no further insight into the biological. Significant limitations of this simulator were the lack of long term relationships between individuals, a couple would breed once and then disassociate and put back into the list of possible mates for the next generation, not exclusionary or creating multiple offspring with similar genes. 
+The simulation takes into account no sociological or psychological contribution to same-sex attraction, the data from the results acts as a baseline for the potential number of genetically determined homosexuals within a population, assuming an individual who is heterozygous in all five active loci was a homosexual. Assumptions however, are intrinsically inaccurate and provides us no further insight into the underlying biological activity. Significant limitations of this simulator were the lack of long term relationships between individuals, a couple would breed once and then disassociate and put back into the list of possible mates for the next generation, not exclusionary or creating multiple offspring with similar genes. 
 
 ## Conclusion
 
+Same-sex sexual attraction is a biologically complex manifestation co-factored by polygenetic influences and environmental factors. The levels of exclusively recessive genetic individuals remained steady at below 1% of the population and did not show signs of convergence towards zero but instead maintained an equilibirum at about 0.08%, comparison of this result to the percentage of individuals identifying as members of the LGBT community in the broader community shows a disparity. Accumulated research into the biological including hormonal, and environmental influences in same-sex sexual behavior may provide stronger variables for use in future population simulations.
 
 ## Funding
 
