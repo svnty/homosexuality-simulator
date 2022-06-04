@@ -9,11 +9,11 @@ Homosexuality was simulated as a genetic trait using custom software. Each year 
 
 ## Introduction
 
-
+Five autosomal loci have been discovered as signifcantly associated with same-sex attraction (Ganna et al, 2019). Meaningful predictions of someones sexuality from genetic loci is not producable, indicating large individual variance and response to inherited traits, however same-sex sexual behavior can be observed to run in families and genetically identical twins. 
 
 ## Methods
 
-Software was developed using rust as a programming language for it's object orientation and low resource usage. A segment of the genome was isolated and it was considered to be a persons entire genome, excluding genes unrelated to same-sex attraction. Initial variables were set such as a breeding range, a death range and an offspring number which was calculated a as a percent of the total alive population. Each year a person would incriment their age by one year and if their age exceeded the death range they would die and be excluded from the gene pool with a 50% chance of someone dying each year they live past 70. Two eligible parents were randomly selected who were within the age range of 20 to 50 from the alive population to create one child. This was repeated until the number of offspring equaled the number of calculated expected offspring, then the next year would commence. The number of births was selected randomly with an upper bound of 1.7% and a lower bound of 1.3% of the total alive population each year. A number of scenarios were simulated with parameteres indicated in the following sections. Initally each simulation started with a population of 10,000 people with random alleles assigned to each gene in their genome. 
+Software was developed using rust as a programming language for it's object orientation and low resource usage. A segment of the genome was isolated and it was considered to be a persons entire genome, excluding genes unrelated to same-sex attraction. Initial variables were set such as a breeding range, a death range and an offspring number which was calculated a as a percent of the total alive population. Each year a person would incriment their age by one year and if their age exceeded the death range they would die and be excluded from the gene pool with a 50% chance of someone dying each year they live past 70. Two eligible parents were randomly selected who were within the age range of 20 to 50 from the alive population to create one child. This was repeated until the number of offspring equaled the number of calculated expected offspring, then the next year would commence. The number of births was selected randomly with an upper bound of 1.7% and a lower bound of 1.3% of the total alive population each year (Roser, 2013). A number of scenarios were simulated with parameteres indicated in the following sections. Initally each simulation started with a population of 10,000 people with random alleles assigned to each gene in their genome. 
 
 ### Scenario One
 
@@ -29,16 +29,6 @@ To be a homosexual an indivdual had to be recessive in at least one gene associa
 
 ## Results
 
-
-
-## Discussion
-
-
-
-## Conclusion
-
-
-
 ### Scenario One
 
 ![1.3 Billion people, no chance of homosexual breeding](/results/scenario_one/1_3billion_percent.png?raw=true)
@@ -51,9 +41,18 @@ To be a homosexual an indivdual had to be recessive in at least one gene associa
 
 
 
+## Discussion
+
+
+
+## Conclusion
+
+
+
 ## Assets 
 [https://github.com/svnty/Homosexuality-Simulator](https://github.com/svnty/Homosexuality-Simulator)
 
 ## References
 Ganna, A., Verweij, K. J. H., Nivard, M. G., Maier, R., Wedow, R., Busch, A. S., Abdellaoui, A., Guo, S., Sathirapongsasuti, J. F., Lichtenstein, P., Lundström, S., Långström, N., Auton, A., Harris, K. M., Beecham, G. W., Martin, E. R., Sanders, A. R., Perry, J. R. B., Neale, B. M., & Zietsch, B. P. (2019). Large-scale GWAS reveals insights into the genetic architecture of same-sex sexual behavior. Science, 365(6456), eaat7693. https://doi.org/10.1126/science.aat7693
 
+Roser, M. (2013). Future Population Growth. Our World in Data. https://ourworldindata.org/future-population-growth
