@@ -86,75 +86,97 @@ impl Person {
   fn determine_homosexual(&self) -> bool {
     let gender = self.get_gender();
     let genome = self.get_genome();
-    let series: f64 = 1.0;
+    let mut series: f64 = 1.0;
+    let mut series_override = true;
+
     // _rs11114975_12q21_31 [ALL_1]
     let _rs11114975_12q21_31 = genome.get_rs11114975_12q21_31();
     match _rs11114975_12q21_31.get_allele_1() {
-      allele::Allele::Recessive => {
-        match _rs11114975_12q21_31.get_allele_2() {
-          allele::Allele::Recessive => {
-            // rs11114975_12q21_31 [CORRELATION = ]
+      allele::Allele::Recessive => match _rs11114975_12q21_31.get_allele_2() {
+        allele::Allele::Recessive => {
+          series = series * (1.0 - ((0.0530 + 0.0035 + 0.0153 + 0.0146) / 3.0)) as f64;
+        }
+        allele::Allele::Dominant => {
+          series_override = false;
+        }
+      },
+      allele::Allele::Dominant => {
+        series_override = false;
+      }
+    }
 
-            // _rs10261857_7q31_2 [ALL_2]
-            let _rs10261857_7q31_2 = genome.get_rs10261857_7q31_2();
-            match _rs10261857_7q31_2.get_allele_1() {
-              allele::Allele::Recessive => {
-                match _rs10261857_7q31_2.get_allele_2() {
-                  allele::Allele::Recessive => {
-                    // GENDER
-                    match gender {
-                      // GENDER [M]
-                      gender::Gender::M => {
-                        // _rs28371400_15q21_3 [M_1]
-                        let _rs28371400_15q21_3 = genome.get_rs28371400_15q21_3();
-                        match _rs28371400_15q21_3.get_allele_1() {
-                          allele::Allele::Recessive => {
-                            match _rs28371400_15q21_3.get_allele_2() {
-                              allele::Allele::Recessive => {
-                                // _rs34730029_11q12_1 [M_2]
-                                let _rs34730029_11q12_1 = genome.get_rs34730029_11q12_1();
-                                match _rs34730029_11q12_1.get_allele_1() {
-                                  allele::Allele::Recessive => {
-                                    match _rs34730029_11q12_1.get_allele_2() {
-                                      allele::Allele::Recessive => return true,
-                                      allele::Allele::Dominant => {},
-                                    }
-                                  }
-                                  allele::Allele::Dominant => {},
-                                }
-                              }
-                              allele::Allele::Dominant => {},
-                            }
-                          }
-                          allele::Allele::Dominant => {},
-                        }
-                      }
-                      // GENDER F
-                      gender::Gender::F => {
-                        let _rs13135637_4p14 = genome.get_rs13135637_4p14();
-                        match _rs13135637_4p14.get_allele_1() {
-                          allele::Allele::Recessive => match _rs13135637_4p14.get_allele_2() {
-                            allele::Allele::Recessive => return true,
-                            allele::Allele::Dominant => {},
-                          },
-                          allele::Allele::Dominant => {},
-                        }
-                      }
-                    }
-                  }
-                  allele::Allele::Dominant => {},
-                }
-              }
-              allele::Allele::Dominant => {},
+    // _rs10261857_7q31_2 [ALL_2]
+    let _rs10261857_7q31_2 = genome.get_rs10261857_7q31_2();
+    match _rs10261857_7q31_2.get_allele_1() {
+      allele::Allele::Recessive => match _rs10261857_7q31_2.get_allele_2() {
+        allele::Allele::Recessive => {
+          series = series * (1.0 - ((0.0027 + 0.0229 + 0.0105) / 3.0)) as f64;
+        }
+        allele::Allele::Dominant => {
+          series_override = false;
+        }
+      },
+      allele::Allele::Dominant => {
+        series_override = false;
+      }
+    }
+
+    match gender {
+      // GENDER [M]
+      gender::Gender::M => {
+        // _rs28371400_15q21_3 [M_1]
+        let _rs28371400_15q21_3 = genome.get_rs28371400_15q21_3();
+        match _rs28371400_15q21_3.get_allele_1() {
+          allele::Allele::Recessive => match _rs28371400_15q21_3.get_allele_2() {
+            allele::Allele::Recessive => {
+              series = series * (1.0 - ((0.0049 + 0.0447 + 0.0180) / 3.0)) as f64;
             }
+            allele::Allele::Dominant => {
+              series_override = false;
+            }
+          },
+          allele::Allele::Dominant => {}
+        }
+        // _rs34730029_11q12_1 [M_2]
+        let _rs34730029_11q12_1 = genome.get_rs34730029_11q12_1();
+        match _rs34730029_11q12_1.get_allele_1() {
+          allele::Allele::Recessive => match _rs34730029_11q12_1.get_allele_2() {
+            allele::Allele::Recessive => {
+              series = series * (1.0 - ((0.0037 + 0.0566 + 0.0155) / 3.0)) as f64;
+            }
+            allele::Allele::Dominant => {
+              series_override = false;
+            }
+          },
+          allele::Allele::Dominant => {
+            series_override = false;
           }
-          allele::Allele::Dominant => {},
         }
       }
-      allele::Allele::Dominant => {},
+      // GENDER F
+      gender::Gender::F => {
+        let _rs13135637_4p14 = genome.get_rs13135637_4p14();
+        match _rs13135637_4p14.get_allele_1() {
+          allele::Allele::Recessive => match _rs13135637_4p14.get_allele_2() {
+            allele::Allele::Recessive => {
+              series = series * (1.0 - (-((-0.0005 + -0.0876 + -0.0143) / 3.0))) as f64;
+            }
+            allele::Allele::Dominant => {
+              series_override = false;
+            }
+          },
+          allele::Allele::Dominant => {
+            series_override = false;
+          }
+        }
+      }
     }
-    if series != 0.0 && rand::thread_rng().gen::<f64>() <= series {
-      return true
+
+    if series_override == true {
+      return true;
+    }
+    if series != 0.0 && rand::thread_rng().gen::<f64>() >= series {
+      return true;
     }
     return false;
   }
@@ -170,7 +192,7 @@ impl Person {
   pub fn get_can_breed(&self) -> bool {
     if self.get_in_breed_range() {
       if self.get_dead() != true {
-        return true
+        return true;
       }
     }
     return false;
@@ -214,11 +236,11 @@ impl Person {
     match self._homosexual {
       Some(homosexual) => {
         if homosexual {
-          return true
+          return true;
         }
-        return false
-      },
-      None => return false
+        return false;
+      }
+      None => return false,
     }
   }
 
@@ -235,18 +257,14 @@ impl Person {
 
   pub fn check_donor_eligible(&self, parent_2: &Person) -> bool {
     match self.get_gender() {
-      gender::Gender::M => {
-        match parent_2.get_gender() {
-          gender::Gender::M => return false,
-          gender::Gender::F => return self.get_donor_status()
-        }
+      gender::Gender::M => match parent_2.get_gender() {
+        gender::Gender::M => return false,
+        gender::Gender::F => return self.get_donor_status(),
       },
-      gender::Gender::F => {
-        match parent_2.get_gender() {
-          gender::Gender::F => return false,
-          gender::Gender::M => return self.get_donor_status()
-        }
-      }
+      gender::Gender::F => match parent_2.get_gender() {
+        gender::Gender::F => return false,
+        gender::Gender::M => return self.get_donor_status(),
+      },
     }
   }
 }
