@@ -17,7 +17,7 @@ Software was developed using rust as a programming language for it's object orie
 
 ### Scenario One
 
-To be a homosexual, an individual had to be recessive in all genes respective for their gender related to same-sex attraction (4 for males, 3 for females). An individual who was recessive in all genes had a 100% chance of being a homosexual, an indivudal who was either homozygous or homozygous dominant at any place in the genome was not a homosexual.
+To be a homosexual, an individual had to be recessive in all genes respective for their gender related to same-sex attraction (4 for males, 3 for females). An individual who was recessive in all genes had a 100% chance of being a homosexual, an individual who was either heterozygous or homozygous dominant at any location in the genome was not a homosexual.
 
 ### Scenario Two
 
