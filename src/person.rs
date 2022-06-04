@@ -89,15 +89,15 @@ impl Person {
     // _rs11114975_12q21_31 [ALL_1]
     let _rs11114975_12q21_31 = genome.get_rs11114975_12q21_31();
     match _rs11114975_12q21_31.get_allele_1() {
-      allele::Allele::Dominant => {
+      allele::Allele::Recessive => {
         match _rs11114975_12q21_31.get_allele_2() {
-          allele::Allele::Dominant => {
+          allele::Allele::Recessive => {
             // _rs10261857_7q31_2 [ALL_2]
             let _rs10261857_7q31_2 = genome.get_rs10261857_7q31_2();
             match _rs10261857_7q31_2.get_allele_1() {
-              allele::Allele::Dominant => {
+              allele::Allele::Recessive => {
                 match _rs10261857_7q31_2.get_allele_2() {
-                  allele::Allele::Dominant => {
+                  allele::Allele::Recessive => {
                     // GENDER
                     match gender {
                       // GENDER [M]
@@ -105,50 +105,50 @@ impl Person {
                         // _rs28371400_15q21_3 [M_1]
                         let _rs28371400_15q21_3 = genome.get_rs28371400_15q21_3();
                         match _rs28371400_15q21_3.get_allele_1() {
-                          allele::Allele::Dominant => {
+                          allele::Allele::Recessive => {
                             match _rs28371400_15q21_3.get_allele_2() {
-                              allele::Allele::Dominant => {
+                              allele::Allele::Recessive => {
                                 // _rs34730029_11q12_1 [M_2]
                                 let _rs34730029_11q12_1 = genome.get_rs34730029_11q12_1();
                                 match _rs34730029_11q12_1.get_allele_1() {
-                                  allele::Allele::Dominant => {
+                                  allele::Allele::Recessive => {
                                     match _rs34730029_11q12_1.get_allele_2() {
-                                      allele::Allele::Dominant => return true,
-                                      allele::Allele::Recessive => return false,
+                                      allele::Allele::Recessive => return true,
+                                      allele::Allele::Dominant => return false,
                                     }
                                   }
-                                  allele::Allele::Recessive => return  false,
+                                  allele::Allele::Dominant => return  false,
                                 }
                               }
-                              allele::Allele::Recessive => return false,
+                              allele::Allele::Dominant => return false,
                             }
                           }
-                          allele::Allele::Recessive => return false,
+                          allele::Allele::Dominant => return false,
                         }
                       }
                       // GENDER F
                       gender::Gender::F => {
                         let _rs13135637_4p14 = genome.get_rs13135637_4p14();
                         match _rs13135637_4p14.get_allele_1() {
-                          allele::Allele::Dominant => match _rs13135637_4p14.get_allele_2() {
-                            allele::Allele::Dominant => return true,
-                            allele::Allele::Recessive => return false,
+                          allele::Allele::Recessive => match _rs13135637_4p14.get_allele_2() {
+                            allele::Allele::Recessive => return true,
+                            allele::Allele::Dominant => return false,
                           },
-                          allele::Allele::Recessive => return false,
+                          allele::Allele::Dominant => return false,
                         }
                       }
                     }
                   }
-                  allele::Allele::Recessive => return false,
+                  allele::Allele::Dominant => return false,
                 }
               }
-              allele::Allele::Recessive => return false,
+              allele::Allele::Dominant => return false,
             }
           }
-          allele::Allele::Recessive => return false,
+          allele::Allele::Dominant => return false,
         }
       }
-      allele::Allele::Recessive => return false,
+      allele::Allele::Dominant => return false,
     }
   }
 
