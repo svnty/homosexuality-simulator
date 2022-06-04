@@ -31,7 +31,7 @@ To be a homosexual an individual had to be recessive in at least one gene associ
 
 ### Scenario Two
 
-![]()
+![500 Million people, no chance of homosexual breeding](/results/scenario_two/500m_percent.png?raw=true)
 
 ## Discussion
 
