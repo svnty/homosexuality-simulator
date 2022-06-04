@@ -17,7 +17,7 @@ Software was developed using rust as a programming language for it's object orie
 
 ## Results
 
-![1.3 Billion people, no chance of homosexual breeding](/img/1_3billion_percent.png)
+![1.3 Billion people, no chance of homosexual breeding](/img/1_3billion_percent.png?raw=true)
 
 ## Assets 
 [https://github.com/svnty/Homosexuality-Simulator](https://github.com/svnty/Homosexuality-Simulator)
