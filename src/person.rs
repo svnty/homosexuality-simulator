@@ -86,12 +86,15 @@ impl Person {
   fn determine_homosexual(&self) -> bool {
     let gender = self.get_gender();
     let genome = self.get_genome();
+    let series: f64 = 0.0;
     // _rs11114975_12q21_31 [ALL_1]
     let _rs11114975_12q21_31 = genome.get_rs11114975_12q21_31();
     match _rs11114975_12q21_31.get_allele_1() {
       allele::Allele::Recessive => {
         match _rs11114975_12q21_31.get_allele_2() {
           allele::Allele::Recessive => {
+            // rs11114975_12q21_31 [CORRELATION = ]
+
             // _rs10261857_7q31_2 [ALL_2]
             let _rs10261857_7q31_2 = genome.get_rs10261857_7q31_2();
             match _rs10261857_7q31_2.get_allele_1() {
@@ -114,16 +117,16 @@ impl Person {
                                   allele::Allele::Recessive => {
                                     match _rs34730029_11q12_1.get_allele_2() {
                                       allele::Allele::Recessive => return true,
-                                      allele::Allele::Dominant => return false,
+                                      allele::Allele::Dominant => {},
                                     }
                                   }
-                                  allele::Allele::Dominant => return  false,
+                                  allele::Allele::Dominant => {},
                                 }
                               }
-                              allele::Allele::Dominant => return false,
+                              allele::Allele::Dominant => {},
                             }
                           }
-                          allele::Allele::Dominant => return false,
+                          allele::Allele::Dominant => {},
                         }
                       }
                       // GENDER F
@@ -132,24 +135,28 @@ impl Person {
                         match _rs13135637_4p14.get_allele_1() {
                           allele::Allele::Recessive => match _rs13135637_4p14.get_allele_2() {
                             allele::Allele::Recessive => return true,
-                            allele::Allele::Dominant => return false,
+                            allele::Allele::Dominant => {},
                           },
-                          allele::Allele::Dominant => return false,
+                          allele::Allele::Dominant => {},
                         }
                       }
                     }
                   }
-                  allele::Allele::Dominant => return false,
+                  allele::Allele::Dominant => {},
                 }
               }
-              allele::Allele::Dominant => return false,
+              allele::Allele::Dominant => {},
             }
           }
-          allele::Allele::Dominant => return false,
+          allele::Allele::Dominant => {},
         }
       }
-      allele::Allele::Dominant => return false,
+      allele::Allele::Dominant => {},
     }
+    if series != 0.0 && rand::thread_rng().gen::<f64>() <= series {
+      return true
+    }
+    return false;
   }
 
   fn set_homosexual(&mut self, homosexual: bool) {
