@@ -1,1 +1,0 @@
-sudo pkill rls cargo && cargo run --release
