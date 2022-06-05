@@ -30,9 +30,13 @@ To be a homosexual, the same conditions as scenario two were established, howeve
 #### Series calculation
 
 *a = genetic correlation gene 1*
+
 *b = genetic correlation gene 2*
+
 *(1-a)(1-b) = x*
+
 *random_number = y [where 0<y<1]*
+
 *if y > x then homosexual = true*
 
 ## Results
