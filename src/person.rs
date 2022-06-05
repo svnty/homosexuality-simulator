@@ -187,10 +187,10 @@ impl Person {
       }
     }
 
-    if series_override == true {
+    if config::SERIES_OVERRIDE != false && series_override == true {
       return true;
     }
-    if series != 1.0 && rand::thread_rng().gen::<f64>() >= series {
+    if config::SERIES_OVERRIDE == false && series != 1.0 && rand::thread_rng().gen::<f64>() >= series {
       return true;
     }
     return false;

@@ -5,4 +5,5 @@ pub static DEATH_RANGE: [u8; 2] = [90, 70];
 pub static BREED_RANGE: [u8; 2] = [20, 50];
 pub static RUN_OFF_GENERATIONS: u16 = 500;
 pub static MAX_POPULATION: u64 = 10_000_000_000;
-pub static ENVIROMENT_PRESSURE: bool = true;
+pub static ENVIROMENT_PRESSURE: bool = false;
+pub static SERIES_OVERRIDE: bool = false;
