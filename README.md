@@ -28,16 +28,13 @@ To be a homosexual an individual had to be recessive in at least one gene associ
 To be a homosexual, the same conditions as scenario two were established, however in this simulation every gene that was homozygous recessive had environmental pressures, an added 0.2 (20%) was added in series to every calculation and a random number was generated between 0 and 1 to compare with the series, if the number generated was greater than the chance of success the person was considered homosexual and would not reproduce.
 
 #### Series calculation
+
 ```
-*a = genetic correlation gene 1*
-
-*b = genetic correlation gene 2*
-
-*(1-a)(1-b) = x*
-
-*random_number = y [where 0<y<1]*
-
-*if y > x then homosexual = true*
+a = genetic correlation gene 1
+b = genetic correlation gene 2
+(1-a)(1-b) = x
+random_number = y [where 0<y<1]
+if y > x then homosexual = true
 ```
 
 ## Results
