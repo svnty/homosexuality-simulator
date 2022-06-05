@@ -36,7 +36,7 @@ if y > x then homosexual = true
 To be a homosexual, the same conditions as scenario two were established, however in this simulation every gene that was homozygous recessive had environmental pressures, an added 0.2 (20%) was added in series to every calculation and a random number was generated between 0 and 1 to compare with the series, if the number generated was greater than the chance of success the person was considered homosexual and would not reproduce.
 
 ```
-x = ∏(1-b)(1-.02)
+x = ∏(1-b)(1-0.2)
 y = random_number [0<=y<=1]
 if y > x then homosexual = true
 ```
