@@ -55,7 +55,7 @@ To be a homosexual, the same conditions as scenario two were established, howeve
 
 ## Discussion
 
-The simulation takes into account no specific sociological or psychological contribution to same-sex attraction, the data from the results act as a baseline for the potential number of genetically determined homosexuals within a population, assuming an individual who is heterozygous in all five active loci was a homosexual. Assumptions, however, are intrinsically inaccurate and provide us no further insight into the underlying biological activity. Significant limitations of this simulator were the lack of long-term relationships between individuals, a couple would breed once and then disassociate and put back into the list of possible mates for the next generation, not exclusionary or creating multiple offspring with similar genes. 
+The simulation takes into account no specific sociological or psychological contribution to same-sex attraction, the data from the results act as a baseline for the potential number of genetically determined homosexuals within a population, assuming an individual who is homozygous in the repesctive active loci was a homosexual. Assumptions, however, are intrinsically inaccurate and provide us no further insight into the underlying biological activity. Significant limitations of this simulator were the lack of long-term relationships between individuals, a couple would breed once and then disassociate and put back into the list of possible mates for the next generation, not exclusionary or creating multiple offspring with similar genes. 
 
 ## Conclusion
 
