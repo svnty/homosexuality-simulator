@@ -20,7 +20,7 @@ dependencies = [
 ]
 
 [[package]]
-name = "homosexuality-simulator-rust"
+name = "homosexuality-simulator"
 version = "0.1.0"
 dependencies = [
  "rand",

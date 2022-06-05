@@ -21,7 +21,7 @@ To be a homosexual, an individual had to be recessive in all genes respective to
 
 ### Scenario Two
 
-To be a homosexual an individual had to be recessive in at least one gene associated with same-sex sexual behavior. Each genetic correlation value was taken from the GWAS investigation conducted by A. Ganna et al, these values were used as a threshold for a random number generator, if a gene was associated with same-sex sexual behavior with a genetic correlation of 0.2, then a series calculation was peformed with the genetic correlation for each gene the individual was homozygous recessive in and a random number was generated and compared to the probability of failure, if the random number was larger than the probability of failure the individual was considered to be a homosexual. If multiple genes were present then the thresholds were calculated by multiplying the genetic correlation in series, then the threshold was compared to a number randomly generated between 0 and 1.
+To be a homosexual an individual had to be recessive in at least one gene associated with same-sex sexual behavior. Each genetic correlation value was taken from the GWAS investigation conducted by A. Ganna et al, these values were used as a threshold for a random number generator, if a gene was associated with same-sex sexual behavior with a genetic correlation of 0.2, then a series calculation was performed with the genetic correlation for each gene the individual was homozygous recessive in and a random number was generated and compared to the probability of failure, if the random number was larger than the probability of failure the individual was considered to be a homosexual. If multiple genes were present then the thresholds were calculated by multiplying the genetic correlation in series, then the threshold was compared to a number randomly generated between 0 and 1.
 
 ```
 x = ∏(1-b)
@@ -55,7 +55,7 @@ if y > x then homosexual = true
 
 ## Discussion
 
-The simulation takes into account no specific sociological or psychological contribution to same-sex attraction, the data from the results act as a baseline for the potential number of genetically determined homosexuals within a population, assuming an individual who is homozygous in the repesctive active loci was a homosexual. Assumptions, however, are intrinsically inaccurate and provide us no further insight into the underlying biological activity. Significant limitations of this simulator were the lack of long-term relationships between individuals, a couple would breed once and then disassociate and put back into the list of possible mates for the next generation, not exclusionary or creating multiple offspring with similar genes. 
+The simulation takes into account no specific sociological or psychological contribution to same-sex attraction, the data from the results act as a baseline for the potential number of genetically determined homosexuals within a population, assuming an individual who is homozygous in the respective active loci was a homosexual. Assumptions, however, are intrinsically inaccurate and provide us no further insight into the underlying biological activity. Significant limitations of this simulator were the lack of long-term relationships between individuals, a couple would breed once and then disassociate and put back into the list of possible mates for the next generation, not exclusionary or creating multiple offspring with similar genes. 
 
 ## Conclusion
 

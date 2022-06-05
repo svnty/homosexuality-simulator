@@ -1,5 +1,5 @@
 [package]
-name = "homosexuality-simulator-rust"
+name = "homosexuality-simulator"
 version = "0.1.0"
 edition = "2021"
 authors = ["Jake Spencer Walklate [svnty] <jakewalklate@protonmail.com>"]
