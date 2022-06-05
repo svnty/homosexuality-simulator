@@ -9,7 +9,7 @@ Homosexuality was simulated as a genetic trait using custom software. Each year 
 
 ## Introduction
 
-Five autosomal loci have been discovered as significantly associated with same-sex attraction (Ganna et al, 2019). Meaningful predictions of someone's sexuality from genetic loci are not producible, indicating large individual variance and response to inherited traits, however same-sex sexual behavior can be observed to run in families and genetically identical twins. Yearly increasing homosexuality rates put into question the assertion that individuals are born exclusively attracted to the same sex and opens the discussion on the environmental influences on same-sex sexual behavior. The initial assumption was that a subset of the species that did not reproduce would be removed from the gene pool and eventually lead to extinction. Software was created to estimate the potential pool size for genetically and exclusively homosexual individuals and the year of extinction of homosexuality, discussed further in the methods section.
+Five autosomal loci have been discovered as significantly associated with same-sex attraction (Ganna et al, 2019). Meaningful predictions of someone's sexuality from genetic loci are not producible, indicating large individual variance and response to inherited traits, however same-sex sexual behavior can be observed to run in families and genetically identical twins. Yearly increasing homosexuality rates put into question the assertion that individuals are born exclusively attracted to the same sex and opens the discussion on the environmental influences on same-sex sexual behavior. The initial assumption was that a subset of the species that did not reproduce would be removed from the gene pool and eventually lead to extinction. Software was created to estimate the potential pool size for genetically and exclusively homosexual individuals assuming all autosomal loci were recessive and to approximate the year of extinction of homosexuality if they were excluded from the gene pool, discussed further in the methods section.
 
 ## Methods
 
@@ -21,21 +21,37 @@ To be a homosexual, an individual had to be recessive in all genes respective to
 
 ### Scenario Two
 
-To be a homosexual an individual had to be recessive in at least one gene associated with same-sex sexual behavior. Each genetic correlation value was taken from the GWAS investigation conducted by A. Ganna et al, these values were used as a threshold for a random number generator, if a gene was associated with same-sex sexual behavior with a genetic correlation of 0.2, then any number randomly generated less than 0.2 and the individual was considered to be homosexual. If multiple genes were present then the thresholds were calculated by multiplying the genetic correlation in series, then the threshold was compared to a number randomly generated between 0 and 1.
+To be a homosexual an individual had to be recessive in at least one gene associated with same-sex sexual behavior. Each genetic correlation value was taken from the GWAS investigation conducted by A. Ganna et al, these values were used as a threshold for a random number generator, if a gene was associated with same-sex sexual behavior with a genetic correlation of 0.2, then a series calculation was peformed with the genetic correlation and a random number was generated and compared to the probability of failure, if the random number was larger than the probability of failure the individual was considered to be a homosexual. If multiple genes were present then the thresholds were calculated by multiplying the genetic correlation in series, then the threshold was compared to a number randomly generated between 0 and 1.
+
+## Scenario Three
+
+To be a homosexual, the same conditions as scenario two were established, however in this simulation every gene that was homozygous recessive had environmental pressures, an added 0.2 (20%) was added in series to every calculation and a random number was generated between 0 and 1 to compare with the series, if the number generated was greater than the chance of success the person was considered homosexual and would not reproduce.
+
+#### Series calculation
+
+*a = genetic correlation gene 1*
+*b = genetic correlation gene 2*
+*(1-a)(1-b) = x*
+*random_number = y [where 0<y<1]*
+*if y > x then homosexual = true*
 
 ## Results
 
 ### Scenario One
 
-![1.3 Billion people, no chance of homosexual breeding](/results/scenario_one/1_3billion_percent.png?raw=true)
+![1.3 Billion people, no chance of homosexual breeding](/results/scenario_3/1_3billion_percent.png?raw=true)
 
 ### Scenario Two
 
-![500 Million people, no chance of homosexual breeding](/results/scenario_two/500m_percent.png?raw=true)
+![500 Million people, no chance of homosexual breeding](/results/scenario_2/500m_percent.png?raw=true)
+
+## Scenario Three
+
+![500 Million people, no chance of homosexual breeding](/results/scenario_3/500m_percent.png?raw=true)
 
 ## Discussion
 
-The simulation takes into account no sociological or psychological contribution to same-sex attraction, the data from the results act as a baseline for the potential number of genetically determined homosexuals within a population, assuming an individual who is heterozygous in all five active loci was a homosexual. Assumptions, however, are intrinsically inaccurate and provide us no further insight into the underlying biological activity. Significant limitations of this simulator were the lack of long-term relationships between individuals, a couple would breed once and then disassociate and put back into the list of possible mates for the next generation, not exclusionary or creating multiple offspring with similar genes. 
+The simulation takes into account no specific sociological or psychological contribution to same-sex attraction, the data from the results act as a baseline for the potential number of genetically determined homosexuals within a population, assuming an individual who is heterozygous in all five active loci was a homosexual. Assumptions, however, are intrinsically inaccurate and provide us no further insight into the underlying biological activity. Significant limitations of this simulator were the lack of long-term relationships between individuals, a couple would breed once and then disassociate and put back into the list of possible mates for the next generation, not exclusionary or creating multiple offspring with similar genes. 
 
 ## Conclusion
 

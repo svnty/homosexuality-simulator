@@ -95,6 +95,9 @@ impl Person {
       allele::Allele::Recessive => match _rs11114975_12q21_31.get_allele_2() {
         allele::Allele::Recessive => {
           series = series * (1.0 - ((0.0530 + 0.0035 + 0.0153 + 0.0146) / 3.0)) as f64;
+          if config::ENVIROMENT_PRESSURE {
+            series = series * (1.0-0.2);
+          }
         }
         allele::Allele::Dominant => {
           series_override = false;
@@ -111,6 +114,9 @@ impl Person {
       allele::Allele::Recessive => match _rs10261857_7q31_2.get_allele_2() {
         allele::Allele::Recessive => {
           series = series * (1.0 - ((0.0027 + 0.0229 + 0.0105) / 3.0)) as f64;
+          if config::ENVIROMENT_PRESSURE {
+            series = series * (1.0-0.2);
+          }
         }
         allele::Allele::Dominant => {
           series_override = false;
@@ -130,6 +136,9 @@ impl Person {
           allele::Allele::Recessive => match _rs28371400_15q21_3.get_allele_2() {
             allele::Allele::Recessive => {
               series = series * (1.0 - ((0.0049 + 0.0447 + 0.0180) / 3.0)) as f64;
+              if config::ENVIROMENT_PRESSURE {
+                series = series * (1.0-0.2);
+              }
             }
             allele::Allele::Dominant => {
               series_override = false;
@@ -143,6 +152,9 @@ impl Person {
           allele::Allele::Recessive => match _rs34730029_11q12_1.get_allele_2() {
             allele::Allele::Recessive => {
               series = series * (1.0 - ((0.0037 + 0.0566 + 0.0155) / 3.0)) as f64;
+              if config::ENVIROMENT_PRESSURE {
+                series = series * (1.0-0.2);
+              }
             }
             allele::Allele::Dominant => {
               series_override = false;
@@ -160,6 +172,9 @@ impl Person {
           allele::Allele::Recessive => match _rs13135637_4p14.get_allele_2() {
             allele::Allele::Recessive => {
               series = series * (1.0 - (-((-0.0005 + -0.0876 + -0.0143) / 3.0))) as f64;
+              if config::ENVIROMENT_PRESSURE {
+                series = series * (1.0-0.2);
+              }
             }
             allele::Allele::Dominant => {
               series_override = false;
