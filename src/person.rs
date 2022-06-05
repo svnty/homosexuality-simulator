@@ -190,7 +190,7 @@ impl Person {
     if series_override == true {
       return true;
     }
-    if series != 0.0 && rand::thread_rng().gen::<f64>() >= series {
+    if series != 1.0 && rand::thread_rng().gen::<f64>() >= series {
       return true;
     }
     return false;
