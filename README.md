@@ -67,6 +67,10 @@ Same-sex sexual attraction is a biologically complex manifestation co-factored b
 
 This project received no funding.
 
+## License
+
+The code is open source, licensed under the [MIT](/LICENSE.md) license.
+
 ## Assets 
 [https://github.com/svnty/Homosexuality-Simulator](https://github.com/svnty/Homosexuality-Simulator)
 
