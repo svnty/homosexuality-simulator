@@ -23,17 +23,21 @@ To be a homosexual, an individual had to be recessive in all genes respective to
 
 To be a homosexual an individual had to be recessive in at least one gene associated with same-sex sexual behavior. Each genetic correlation value was taken from the GWAS investigation conducted by A. Ganna et al, these values were used as a threshold for a random number generator, if a gene was associated with same-sex sexual behavior with a genetic correlation of 0.2, then a series calculation was peformed with the genetic correlation and a random number was generated and compared to the probability of failure, if the random number was larger than the probability of failure the individual was considered to be a homosexual. If multiple genes were present then the thresholds were calculated by multiplying the genetic correlation in series, then the threshold was compared to a number randomly generated between 0 and 1.
 
+
+```
+x = ∏(1-b)
+y = random_number [0<=y<=1]
+if y > x then homosexual = true
+```
+
+
 ### Scenario Three
 
 To be a homosexual, the same conditions as scenario two were established, however in this simulation every gene that was homozygous recessive had environmental pressures, an added 0.2 (20%) was added in series to every calculation and a random number was generated between 0 and 1 to compare with the series, if the number generated was greater than the chance of success the person was considered homosexual and would not reproduce.
 
-#### Series calculation
-
 ```
-a = genetic correlation gene 1
-b = genetic correlation gene 2
-(1-a)(1-b) = x
-random_number = y [where 0<=y<=1]
+x = ∏(1-b)(1-.02)
+y = random_number [0<=y<=1]
 if y > x then homosexual = true
 ```
 
