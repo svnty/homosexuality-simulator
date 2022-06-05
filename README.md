@@ -39,7 +39,7 @@ To be a homosexual, the same conditions as scenario two were established, howeve
 
 ### Scenario One
 
-![1.3 Billion people, no chance of homosexual breeding](/results/scenario_3/1_3billion_percent.png?raw=true)
+![1.3 Billion people, no chance of homosexual breeding](/results/scenario_1/1_3billion_percent.png?raw=true)
 
 ### Scenario Two
 
