@@ -1,12 +1,10 @@
 .DS_Store
-/old_results
-~$result_book.xlsx
-*/~$source.xlsx
-node_modules
-package-lock.json
+
 target
 target/
 ./target/**/*
 /target
+
 .DS_Store
-._book.xlsx
+._*
+~$*
