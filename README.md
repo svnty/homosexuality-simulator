@@ -21,7 +21,7 @@ To be a homosexual, an individual had to be recessive in all genes respective to
 
 ### Scenario Two
 
-To be a homosexual an individual had to be recessive in at least one gene associated with same-sex sexual behavior. Each genetic correlation value was taken from the GWAS investigation conducted by A. Ganna et al, these values were used as a threshold for a random number generator, a series calculation was performed with the genetic correlation for each gene the individual was homozygous recessive in and a random number was generated and compared to the probability of failure, if the random number was larger than the probability of failure the individual was considered to be a homosexual. In this scenario a person may be homozygous recessive for all five genes but not homosexual.
+To be a homosexual an individual had to be recessive in at least one gene associated with same-sex sexual behavior. Each genetic correlation value was taken from the GWAS investigation conducted by A. Ganna et al, these values were used as a threshold for a random number generator. A series calculation was performed with the genetic correlation for each gene the individual was homozygous recessive in and a random number was generated and compared to the probability of failure, if the random number was larger than the probability of failure the individual was considered to be a homosexual. In this scenario a person may be homozygous recessive for all five genes but not homosexual.
 
 ```
 x = ∏(1-b)
