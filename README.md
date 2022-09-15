@@ -5,7 +5,7 @@
 
 ## Abstract
 
-Homosexuality was simulated as a genetic trait using custom software. Each year in the simulation a random percent of the population within a range would produce offspring, the laws of segregation were applied to the offspring using the parents' genome and homosexuals would not breed and pass on their genes. The simulator produced results indicating that if homosexuality was the condition of having recessive alleles for all genes involved in homosexuality the number of homosexuals averaged at around 0.08% ± 0.075% of the population. This result implies there is a large sociological or psychological aspect to same-sex attraction. 
+Previous studies have indicated that homosexuality is a complex of 5 genetic loci and psychological factors. Homosexuality was simulated as a genetic trait using custom software. Each year in the simulation a random percent of the population within a range would produce offspring, the laws of segregation were applied to the offspring using the parents' genome and homosexuals would not breed and pass on their genes. The simulator produced results indicating that if homosexuality was the condition of having recessive alleles for all genes involved in homosexuality the number of homosexuals averaged at around 0.08% ± 0.075% of the population. This result in contrast to the number of homosexuals within any western population of ≈2% implies there is a significantly large sociological or psychological aspect to same-sex attraction. 
 
 ## Introduction
 
